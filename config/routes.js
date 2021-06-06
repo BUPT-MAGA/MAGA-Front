@@ -54,7 +54,7 @@ export default [
               {
                 path: '/manage',
                 name: '用户管理',
-                icon: 'smile',
+                icon: 'user',
                 component: '../layouts/BlankLayout',
                 routes: [
                     {
@@ -82,13 +82,13 @@ export default [
               {
                 path: '/monitor',
                 name: '实时监控',
-                icon: 'smile',
+                icon: 'AreaChartOutlined',
                 component: './Monitor',
               },
               {
                 path: '/statistics',
                 name: '统计报表',
-                icon: 'smile',
+                icon: 'pie-chart',
                 component: './Statistics',
               },
               {
