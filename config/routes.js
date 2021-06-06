@@ -34,25 +34,67 @@ export default [
                 component: './Welcome',
               },
               {
-                path: '/admin',
-                name: 'admin',
-                icon: 'crown',
-                component: './Admin',
-                authority: ['admin'],
+                path: '/settings',
+                name: '系统设置',
+                icon: 'setting',
+                component: '../layouts/BlankLayout',
                 routes: [
-                  {
-                    path: '/admin/sub-page',
-                    name: 'sub-page',
-                    icon: 'smile',
-                    component: './Welcome',
-                    authority: ['admin'],
-                  },
-                ],
+                    {
+                        name: '主控信息',
+                        path: '/settings/hostinfo',
+                        component: './settings/Hostinfo'
+                    },
+                    {
+                        name: '主控设置',
+                        path: '/settings/hostset',
+                        component: './settings/Hostset'
+                    },
+                ]
               },
               {
+                path: '/manage',
+                name: '用户管理',
+                icon: 'smile',
+                component: '../layouts/BlankLayout',
+                routes: [
+                    {
+                        name: '用户入住',
+                        path: '/manage/checkin',
+                        component: './Manage/Checkin'
+                    },
+                    {
+                        name: '用户退房',
+                        path: '/manage/checkout',
+                        component: './Manage/Checkout'
+                    },
+                    {
+                        name: '用户账单',
+                        path: '/manage/bill',
+                        component: './Manage/Bill'
+                    },
+                    {
+                        name: '住房信息',
+                        path: '/manage/room',
+                        component: './Manage/Room'
+                    }
+                ]
+              },
+              {
+                path: '/monitor',
+                name: '实时监控',
+                icon: 'smile',
+                component: './Monitor',
+              },
+              {
+                path: '/statistics',
+                name: '统计报表',
+                icon: 'smile',
+                component: './Statistics',
+              },
+              {
+                path: '/list',
                 name: 'list.table-list',
                 icon: 'table',
-                path: '/list',
                 component: './TableList',
               },
               {

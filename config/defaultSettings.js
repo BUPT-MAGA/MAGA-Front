@@ -1,13 +1,13 @@
 const proSettings = {
-  navTheme: 'dark',
+  navTheme: 'light',
   // 拂晓蓝
-  primaryColor: '#1890ff',
-  layout: 'side',
+  primaryColor: '#484848',
+  layout: 'top',
   contentWidth: 'Fluid',
   fixedHeader: false,
   fixSiderbar: true,
   colorWeak: false,
-  title: 'Ant Design Pro',
+  title: 'MAGA',
   pwa: false,
   iconfontUrl: '',
 };

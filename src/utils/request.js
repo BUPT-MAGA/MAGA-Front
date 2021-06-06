@@ -1,4 +1,6 @@
 /** Request 网络请求工具 更详细的 api 文档: https://github.com/umijs/umi-request */
+
+import axios from 'axios';
 import { extend } from 'umi-request';
 import { notification } from 'antd';
 const codeMessage = {
@@ -53,3 +55,54 @@ const request = extend({
   credentials: 'include', // Does the default request bring cookies
 });
 export default request;
+
+
+// let request = axios.create({
+//     baseURL: 'http://localhost:8923',
+//     timeout: 5000,
+//   });
+  
+//   request.interceptors.request.use(
+//     (config) => {
+//       let token = localStorage.getItem('accessToken');
+//       if (token) {
+//         config.headers['Authorization'] = 'Bearer ' + token;
+//       }
+//       return config;
+//     },
+//     (error) => {
+//       return Promise.reject(error);
+//     }
+//   );
+  
+//   request.interceptors.response.use(
+//     async (data) => {
+//       return data;
+//     },
+//     (error) => {
+//       if (error.response && error.response.status) {
+//         const { response } = error;
+  
+//         const errorText = codeMessage[response.status] || response.statusText;
+  
+//         notification.error({
+//           message: `请求错误： ${response.status}`,
+//           description: errorText,
+//         });
+  
+//         if (response.status === 401) {
+//           console.log(401);
+//           setTimeout(() => history.push('/login'), 2000);
+//         }
+  
+//         return Promise.reject(error.response.data);
+//       } else {
+//         notification.error({
+//           message: `请求错误： ${error.message}`,
+//         });
+//         return Promise.reject(error);
+//       }
+//     }
+//   );
+  
+//   export default request;

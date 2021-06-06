@@ -3,6 +3,13 @@ MAGA: Make AC Great Again! (A Central Air Conditioning System)
 
 This project is initialized with [Ant Design Pro](https://pro.ant.design). Follow is the quick guide for how to use.
 
+## Features
+
+## Frameworks
+- React
+- UmiJS
+- Ant Design Pro
+
 ## Environment Prepare
 
 Install `node_modules`:

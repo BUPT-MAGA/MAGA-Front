@@ -11,7 +11,7 @@ import { Result, Button } from 'antd';
 import Authorized from '@/utils/Authorized';
 import RightContent from '@/components/GlobalHeader/RightContent';
 import { getMatchMenu } from '@umijs/route-utils';
-import logo from '../assets/logo.svg';
+import logo from '../assets/logo.png';
 const noMatch = (
   <Result
     status={403}
@@ -37,24 +37,18 @@ const menuDataRender = (menuList) =>
 
 const defaultFooterDom = (
   <DefaultFooter
-    copyright={`${new Date().getFullYear()} Produced by Ant Group Experience Technology Department`}
+    copyright={`${new Date().getFullYear()} Produced by MAGA Technology Group`}
     links={[
       {
-        key: 'Ant Design Pro',
-        title: 'Ant Design Pro',
-        href: 'https://pro.ant.design',
+        key: 'MAGA',
+        title: 'MAGA',
+        href: 'https://github.com/BUPT-MAGA',
         blankTarget: true,
       },
       {
         key: 'github',
         title: <GithubOutlined />,
-        href: 'https://github.com/ant-design/ant-design-pro',
-        blankTarget: true,
-      },
-      {
-        key: 'Ant Design',
-        title: 'Ant Design',
-        href: 'https://ant.design',
+        href: 'https://github.com/BUPT-MAGA',
         blankTarget: true,
       },
     ]}
@@ -113,7 +107,6 @@ const BasicLayout = (props) => {
         ) {
           return defaultDom;
         }
-
         return <Link to={menuItemProps.path}>{defaultDom}</Link>;
       }}
       breadcrumbRender={(routers = []) => [
