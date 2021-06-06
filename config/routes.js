@@ -35,7 +35,7 @@ export default [
               },
               {
                 path: '/settings',
-                name: '系统设置',
+                name: 'settings',
                 icon: 'setting',
                 component: '../layouts/BlankLayout',
                 routes: [
@@ -53,7 +53,7 @@ export default [
               },
               {
                 path: '/manage',
-                name: '用户管理',
+                name: 'manage',
                 icon: 'user',
                 component: '../layouts/BlankLayout',
                 routes: [
@@ -81,13 +81,13 @@ export default [
               },
               {
                 path: '/monitor',
-                name: '实时监控',
+                name: 'monitor',
                 icon: 'AreaChartOutlined',
                 component: './Monitor',
               },
               {
                 path: '/statistics',
-                name: '统计报表',
+                name: 'report',
                 icon: 'pie-chart',
                 component: './Statistics',
               },
