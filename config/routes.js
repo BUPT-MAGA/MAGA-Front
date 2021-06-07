@@ -34,22 +34,44 @@ export default [
                 component: './Welcome',
               },
               {
+                path: '/admin',
+                name: 'admin',
+                icon: 'crown',
+                component: './Admin',
+                authority: ['admin'],
+                routes: [
+                  {
+                    path: '/admin/sub-page',
+                    name: 'sub-page',
+                    icon: 'smile',
+                    component: './Welcome',
+                    authority: ['admin'],
+                  },
+                ],
+              },
+              {
+                path: '/list',
+                name: 'list.table-list',
+                icon: 'table',
+                component: './TableList',
+              },
+              {
                 path: '/settings',
                 name: 'settings',
                 icon: 'setting',
                 component: '../layouts/BlankLayout',
                 routes: [
-                    {
-                        name: '主控信息',
-                        path: '/settings/hostinfo',
-                        component: './settings/Hostinfo'
-                    },
-                    {
-                        name: '主控设置',
-                        path: '/settings/hostset',
-                        component: './settings/Hostset'
-                    },
-                ]
+                  {
+                    name: '主控信息',
+                    path: '/settings/hostinfo',
+                    component: './settings/Hostinfo',
+                  },
+                  {
+                    name: '主控设置',
+                    path: '/settings/hostset',
+                    component: './settings/Hostset',
+                  },
+                ],
               },
               {
                 path: '/manage',
@@ -57,27 +79,27 @@ export default [
                 icon: 'user',
                 component: '../layouts/BlankLayout',
                 routes: [
-                    {
-                        name: '用户入住',
-                        path: '/manage/checkin',
-                        component: './Manage/Checkin'
-                    },
-                    {
-                        name: '用户退房',
-                        path: '/manage/checkout',
-                        component: './Manage/Checkout'
-                    },
-                    {
-                        name: '用户账单',
-                        path: '/manage/bill',
-                        component: './Manage/Bill'
-                    },
-                    {
-                        name: '住房信息',
-                        path: '/manage/room',
-                        component: './Manage/Room'
-                    }
-                ]
+                  {
+                    name: '用户入住',
+                    path: '/manage/checkin',
+                    component: './Manage/Checkin',
+                  },
+                  {
+                    name: '用户退房',
+                    path: '/manage/checkout',
+                    component: './Manage/Checkout',
+                  },
+                  {
+                    name: '用户账单',
+                    path: '/manage/bill',
+                    component: './Manage/Bill',
+                  },
+                  {
+                    name: '住房信息',
+                    path: '/manage/room',
+                    component: './Manage/Room',
+                  },
+                ],
               },
               {
                 path: '/monitor',
@@ -91,12 +113,7 @@ export default [
                 icon: 'pie-chart',
                 component: './Statistics',
               },
-              {
-                path: '/list',
-                name: 'list.table-list',
-                icon: 'table',
-                component: './TableList',
-              },
+
               {
                 component: './404',
               },

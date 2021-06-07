@@ -1,9 +1,10 @@
 import { stringify } from 'querystring';
 import { history } from 'umi';
-import { fakeAccountLogin } from '@/services/login';
+import { AccountLogin, AccountSignUp } from '@/services/login';
 import { setAuthority } from '@/utils/authority';
 import { getPageQuery } from '@/utils/utils';
 import { message } from 'antd';
+
 const Model = {
   namespace: 'login',
   state: {
@@ -11,13 +12,14 @@ const Model = {
   },
   effects: {
     *login({ payload }, { call, put }) {
-      const response = yield call(fakeAccountLogin, payload);
-      yield put({
-        type: 'changeLoginStatus',
-        payload: response,
-      }); // Login successfully
-
-      if (response.status === 'ok') {
+      try {
+        const response = yield call(AccountLogin, payload);
+        console.log(response.data);
+        localStorage.setItem('accessToken', response.data.accessToken);
+        yield put({
+          type: 'changeLoginStatus',
+          payload: response,
+        }); // Login successfully
         const urlParams = new URL(window.location.href);
         const params = getPageQuery();
         message.success('🎉 🎉 🎉  登录成功！');
@@ -43,6 +45,18 @@ const Model = {
         }
 
         history.replace(redirect || '/');
+      } catch (e) {
+        message.error('登录失败');
+      }
+    },
+
+    *signup({ payload }, { call, put }) {
+      try {
+        const response = yield call(AccountSignUp, payload);
+        console.log(response);
+        message.success("注册成功！")
+      } catch (e) {
+        message.error('注册失败');
       }
     },
 

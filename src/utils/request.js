@@ -49,32 +49,31 @@ const errorHandler = (error) => {
  * @zh-CN 配置request请求时的默认参数
  */
 
-const request = extend({
-  errorHandler,
-  // default error handling
-  credentials: 'include', // Does the default request bring cookies
+// const request = extend({
+// //   prefix: 'http://127.0.0.1:8923',
+//   errorHandler,
+//   // default error handling
+//   credentials: 'include', // Does the default request bring cookies
+// });
+
+let request = axios.create({
+  baseURL: 'http://localhost:8923',
+  timeout: 5000,
 });
-export default request;
 
+request.interceptors.request.use(
+  (config) => {
+    let token = localStorage.getItem('accessToken');
+    if (token) {
+      config.headers['Authorization'] = 'Bearer ' + token;
+    }
+    return config;
+  },
+  //   (error) => {
+  //     return Promise.reject(error);
+  //   },
+);
 
-// let request = axios.create({
-//     baseURL: 'http://localhost:8923',
-//     timeout: 5000,
-//   });
-  
-//   request.interceptors.request.use(
-//     (config) => {
-//       let token = localStorage.getItem('accessToken');
-//       if (token) {
-//         config.headers['Authorization'] = 'Bearer ' + token;
-//       }
-//       return config;
-//     },
-//     (error) => {
-//       return Promise.reject(error);
-//     }
-//   );
-  
 //   request.interceptors.response.use(
 //     async (data) => {
 //       return data;
@@ -82,19 +81,19 @@ export default request;
 //     (error) => {
 //       if (error.response && error.response.status) {
 //         const { response } = error;
-  
+
 //         const errorText = codeMessage[response.status] || response.statusText;
-  
+
 //         notification.error({
 //           message: `请求错误： ${response.status}`,
 //           description: errorText,
 //         });
-  
+
 //         if (response.status === 401) {
 //           console.log(401);
 //           setTimeout(() => history.push('/login'), 2000);
 //         }
-  
+
 //         return Promise.reject(error.response.data);
 //       } else {
 //         notification.error({
@@ -104,5 +103,5 @@ export default request;
 //       }
 //     }
 //   );
-  
-//   export default request;
+
+export default request;

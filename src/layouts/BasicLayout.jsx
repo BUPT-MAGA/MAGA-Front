@@ -1,5 +1,5 @@
 /**
- * Ant Design Pro v4 use `@ant-design/pro-layout` to handle Layout.
+ * MAGA v4 use `@ant-design/pro-layout` to handle Layout.
  *
  * @see You can view component api by: https://github.com/ant-design/ant-design-pro-layout
  */
@@ -35,7 +35,7 @@ const menuDataRender = (menuList) =>
     return Authorized.check(item.authority, localItem, null);
   });
 
-const defaultFooterDom = (
+export const defaultFooterDom = (
   <DefaultFooter
     copyright={`${new Date().getFullYear()} Produced by MAGA Technology Group`}
     links={[
@@ -140,7 +140,7 @@ const BasicLayout = (props) => {
         return menuData || [];
       }}
       waterMarkProps={{
-        content: 'Ant Design Pro',
+        content: 'MAGA',
         fontColor: 'rgba(24,144,255,0.15)',
       }}
     >

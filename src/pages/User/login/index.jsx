@@ -1,9 +1,9 @@
 import {
-  AlipayCircleOutlined,
+  GithubOutlined,
   LockOutlined,
   MailOutlined,
   MobileOutlined,
-  TaobaoCircleOutlined,
+  WechatOutlined,
   UserOutlined,
   WeiboCircleOutlined,
 } from '@ant-design/icons';
@@ -28,15 +28,27 @@ const LoginMessage = ({ content }) => (
 const Login = (props) => {
   const { userLogin = {}, submitting } = props;
   const { status, type: loginType } = userLogin;
-  const [type, setType] = useState('account');
+  const [type, setType] = useState('login');
   const intl = useIntl();
 
   const handleSubmit = (values) => {
+    console.log(values);
     const { dispatch } = props;
-    dispatch({
-      type: 'login/login',
-      payload: { ...values, type },
-    });
+    if (type === 'login') {
+      dispatch({
+        type: 'login/login',
+        payload: { ...values, type },
+      });
+    } else {
+      values = { ...values, ['role']: 'admin' };
+      {
+        /* add role to register */
+      }
+      dispatch({
+        type: 'login/signup',
+        payload: { ...values, type },
+      });
+    }
   };
 
   return (
@@ -62,22 +74,22 @@ const Login = (props) => {
       >
         <Tabs activeKey={type} onChange={setType}>
           <Tabs.TabPane
-            key="account"
+            key="login"
             tab={intl.formatMessage({
               id: 'pages.login.accountLogin.tab',
               defaultMessage: 'Account password login',
             })}
           />
           <Tabs.TabPane
-            key="mobile"
+            key="signup"
             tab={intl.formatMessage({
-              id: 'pages.login.phoneLogin.tab',
-              defaultMessage: 'Mobile phone number login',
+              id: 'pages.login.accountSignUp.tab',
+              defaultMessage: 'Account sign up',
             })}
           />
         </Tabs>
 
-        {status === 'error' && loginType === 'account' && !submitting && (
+        {status === 'error' && loginType === 'login' && !submitting && (
           <LoginMessage
             content={intl.formatMessage({
               id: 'pages.login.accountLogin.errorMessage',
@@ -85,10 +97,11 @@ const Login = (props) => {
             })}
           />
         )}
-        {type === 'account' && (
+        {/* login */}
+        {type === 'login' && (
           <>
             <ProFormText
-              name="userName"
+              name="username"
               fieldProps={{
                 size: 'large',
                 prefix: <UserOutlined className={styles.prefixIcon} />,
@@ -134,90 +147,56 @@ const Login = (props) => {
           </>
         )}
 
-        {status === 'error' && loginType === 'mobile' && !submitting && (
+        {status === 'error' && loginType === 'signup' && !submitting && (
           <LoginMessage content="Verification code error" />
         )}
-        {type === 'mobile' && (
+
+        {/* signup */}
+        {type === 'signup' && (
           <>
             <ProFormText
+              name="username"
               fieldProps={{
                 size: 'large',
-                prefix: <MobileOutlined className={styles.prefixIcon} />,
+                prefix: <UserOutlined className={styles.prefixIcon} />,
               }}
-              name="mobile"
               placeholder={intl.formatMessage({
-                id: 'pages.login.phoneNumber.placeholder',
-                defaultMessage: 'Phone number',
+                id: 'pages.login.username.placeholder',
+                defaultMessage: 'Please input user name！',
               })}
               rules={[
                 {
                   required: true,
                   message: (
                     <FormattedMessage
-                      id="pages.login.phoneNumber.required"
-                      defaultMessage="Please enter phone number!"
-                    />
-                  ),
-                },
-                {
-                  pattern: /^1\d{10}$/,
-                  message: (
-                    <FormattedMessage
-                      id="pages.login.phoneNumber.invalid"
-                      defaultMessage="Malformed phone number!"
+                      id="pages.login.username.required"
+                      defaultMessage="Please enter user name!"
                     />
                   ),
                 },
               ]}
             />
-            <ProFormCaptcha
+            <ProFormText.Password
+              name="password"
               fieldProps={{
                 size: 'large',
-                prefix: <MailOutlined className={styles.prefixIcon} />,
-              }}
-              captchaProps={{
-                size: 'large',
+                prefix: <LockOutlined className={styles.prefixIcon} />,
               }}
               placeholder={intl.formatMessage({
-                id: 'pages.login.captcha.placeholder',
-                defaultMessage: 'Please enter verification code',
+                id: 'pages.login.password.placeholder',
+                defaultMessage: 'Password: ant.design',
               })}
-              captchaTextRender={(timing, count) => {
-                if (timing) {
-                  return `${count} ${intl.formatMessage({
-                    id: 'pages.getCaptchaSecondText',
-                    defaultMessage: 'Get verification code',
-                  })}`;
-                }
-
-                return intl.formatMessage({
-                  id: 'pages.login.phoneLogin.getVerificationCode',
-                  defaultMessage: 'Get verification code',
-                });
-              }}
-              name="captcha"
               rules={[
                 {
                   required: true,
                   message: (
                     <FormattedMessage
-                      id="pages.login.captcha.required"
-                      defaultMessage="Please enter verification code！"
+                      id="pages.login.password.required"
+                      defaultMessage="Please enter password！"
                     />
                   ),
                 },
               ]}
-              onGetCaptcha={async (mobile) => {
-                const result = await getFakeCaptcha(mobile);
-
-                if (result === false) {
-                  return;
-                }
-
-                message.success(
-                  'Get the verification code successfully! The verification code is: 1234',
-                );
-              }}
             />
           </>
         )}
@@ -233,15 +212,16 @@ const Login = (props) => {
             style={{
               float: 'right',
             }}
+            onClick={() => message.warn("请联系管理员！")}
           >
-            <FormattedMessage id="pages.login.forgotPassword" defaultMessage="Forget password" />
+            <FormattedMessage id="pages.login.forgotPassword" defaultMessage="Forget password"/>
           </a>
         </div>
       </ProForm>
       <Space className={styles.other}>
         <FormattedMessage id="pages.login.loginWith" defaultMessage="Other login methods" />
-        <AlipayCircleOutlined className={styles.icon} />
-        <TaobaoCircleOutlined className={styles.icon} />
+        <GithubOutlined className={styles.icon} />
+        <WechatOutlined className={styles.icon} />
         <WeiboCircleOutlined className={styles.icon} />
       </Space>
     </div>

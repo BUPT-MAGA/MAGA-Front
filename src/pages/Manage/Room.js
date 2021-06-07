@@ -25,7 +25,7 @@ const columns1 = [
     dataIndex: 'active',
   },
   {
-    title: '用户姓名',
+    title: '住户身份证',
     dataIndex: 'username',
   },
 ];
@@ -57,7 +57,7 @@ class TableDemo extends React.Component {
   render() {
     return (
       <div>
-        <CustomBreadcrumb arr={['住户管理', '住房信息']} />
+        <CustomBreadcrumb arr={['用户管理', '住房信息']} />
         <Card
           bordered={false}
           title="住房信息"
