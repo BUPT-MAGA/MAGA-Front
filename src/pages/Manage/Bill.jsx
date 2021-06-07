@@ -12,14 +12,13 @@ import {
   Input,
   Row,
 } from 'antd';
-import { CreditCardOutlined, NumberOutlined } from '@ant-design/icons';
+import { CreditCardOutlined, PayCircleOutlined } from '@ant-design/icons';
 import ProForm, { ProFormText } from '@ant-design/pro-form';
 import { useIntl, FormattedMessage } from 'umi';
 import { PageHeaderWrapper } from '@ant-design/pro-layout';
+import ProCard from '@ant-design/pro-card';
 import request from '../../utils/request';
 import { Typography, Alert } from 'antd';
-
-const { Title } = Typography;
 
 const columns1 = [
   {
@@ -100,82 +99,64 @@ export default () => {
   return (
     <PageHeaderWrapper>
       <Card bordered={false} title="" style={{ marginBottom: 10 }} id="basicUsage">
-        <div
-          style={{
-            width: 330,
-            margin: 'auto',
-          }}
-        ></div>
-
-        <Row style={{ marginBottom: 10 }}>
-          <Col span={10}>
-            <Card>
-              <Statistic
-                title="费用总计"
-                value={fee}
-                precision={2}
-                prefix={<Icon type="pay-circle" />}
-                suffix="元"
-              />
-            </Card>
-          </Col>
-          <Col>
-            <ProForm
-              onFinish={async (values) => {
-                handleSubmit(values);
-                message.success('查询成功');
-              }}
-              submitter={{
-                searchConfig: {
-                  submitText: '查询账单',
-                },
-                render: (_, dom) => dom.pop(),
-                submitButtonProps: {
-                  size: 'large',
-                  style: {
-                    width: '100%',
-                  },
-                },
+        <ProCard gutter={[{ xs: 16, sm: 16, md: 32, lg: 32, xl: 64 }, 16]}>
+          <ProCard colSpan="40%" title="费用总计" headerBordered bordered>
+            <Statistic value={fee} precision={2} prefix={<PayCircleOutlined />} suffix="元" />
+          </ProCard>
+          <ProCard bordered>
+            <div
+              style={{
+                width: 330,
+                margin: 'auto',
               }}
             >
-              <ProFormText
-                fieldProps={{
-                  size: 'large',
-                  prefix: <CreditCardOutlined />,
+              {' '}
+              <ProForm
+                onFinish={async (values) => {
+                  handleSubmit(values);
+                  message.success('查询成功');
                 }}
-                name="username"
-                label="客户身份证号"
-                tooltip="身份证长度为 18 位"
-                placeholder="请输入身份证号"
-                rules={[
-                  {
-                    required: true,
-                    message: '请输入身份证号!',
+                submitter={{
+                  searchConfig: {
+                    submitText: '查询账单',
                   },
-                  // {
-                  //   pattern: /^\d{18}$/,
-                  //   message: '不合法的身份证号!',
-                  // },
-                ]}
-              />
-            </ProForm>
-          </Col>
-        </Row>
+                  render: (_, dom) => dom.pop(),
+                  submitButtonProps: {
+                    size: 'large',
+                    style: {
+                      width: '100%',
+                    },
+                  },
+                }}
+              >
+                <ProFormText
+                  fieldProps={{
+                    size: 'large',
+                    prefix: <CreditCardOutlined />,
+                  }}
+                  name="username"
+                  // label="客户身份证号"
+                  tooltip="身份证长度为 18 位"
+                  placeholder="请输入身份证号"
+                  rules={[
+                    {
+                      required: true,
+                      message: '请输入身份证号!',
+                    },
+                    // {
+                    //   pattern: /^\d{18}$/,
+                    //   message: '不合法的身份证号!',
+                    // },
+                  ]}
+                />
+              </ProForm>
+            </div>
+          </ProCard>
+        </ProCard>
 
-        <Alert
-          message={intl.formatMessage({
-            id: '费用详单',
-            defaultMessage: '费用详单',
-          })}
-          type="success"
-          showIcon
-          // banner
-          // style={{
-          // margin: -12,
-          // marginBottom: 24,
-          // }}
-        />
-        <Table dataSource={logs} columns={columns1} />
+        <ProCard title="查看详单" collapsible defaultCollapsed>
+          <Table dataSource={logs} columns={columns1} />
+        </ProCard>
       </Card>
       <BackTop visibilityHeight={200} style={{ right: 50 }} />
     </PageHeaderWrapper>
