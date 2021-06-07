@@ -38,23 +38,22 @@ export default [
                 name: 'admin',
                 icon: 'crown',
                 component: './Admin',
-                authority: ['admin'],
+                // authority: ['admin', 'user'],
                 routes: [
                   {
                     path: '/admin/sub-page',
                     name: 'sub-page',
-                    icon: 'smile',
                     component: './Welcome',
-                    authority: ['admin'],
+                    // authority: ['admin', 'user'],
                   },
                 ],
               },
-              {
-                path: '/list',
-                name: 'list.table-list',
-                icon: 'table',
-                component: './TableList',
-              },
+              //   {
+              //     path: '/list',
+              //     name: 'list.table-list',
+              //     icon: 'table',
+              //     component: './TableList',
+              //   },
               {
                 path: '/settings',
                 name: 'settings',

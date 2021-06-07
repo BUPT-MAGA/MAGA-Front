@@ -1,20 +1,8 @@
 import React from 'react';
-import {
-  Card,
-  Popconfirm,
-  Button,
-  Icon,
-  Table,
-  Divider,
-  BackTop,
-  Affix,
-  Anchor,
-  Form,
-  InputNumber,
-  Input,
-} from 'antd';
+import { Card, Table, BackTop } from 'antd';
 import CustomBreadcrumb from '../../components/CustomBreadcrumb/index';
 import request from '../../utils/request';
+
 const columns1 = [
   {
     title: '房间号',
@@ -30,15 +18,6 @@ const columns1 = [
   },
 ];
 
-const data1 = [
-  {
-    key: '1',
-    id: '101',
-    checkin: '是',
-    name: '张三',
-  },
-];
-
 class TableDemo extends React.Component {
   state = {
     data: [],
@@ -46,7 +25,7 @@ class TableDemo extends React.Component {
 
   async componentDidMount() {
     try {
-      let data = (await request.get('/api/checkin')).data;
+      const data = (await request.get('/api/checkin')).data;
       console.log(data);
       this.setState({
         data: data,
@@ -59,15 +38,15 @@ class TableDemo extends React.Component {
       <div>
         <CustomBreadcrumb arr={['用户管理', '住房信息']} />
         <Card
-          bordered={false}
+          //   bordered={false}
           title="住房信息"
           style={{ marginBottom: 10 }}
-          id="basicUsage"
+          id="roominfo"
         >
           <Table
             dataSource={this.state.data}
             columns={columns1}
-            style={styles.tableStyle}
+            // style={styles.tableStyle}
           />
         </Card>
         <BackTop visibilityHeight={200} style={{ right: 50 }} />
@@ -75,17 +54,5 @@ class TableDemo extends React.Component {
     );
   }
 }
-
-const styles = {
-  tableStyle: {
-    width: '80%',
-  },
-  affixBox: {
-    position: 'absolute',
-    top: 100,
-    right: 50,
-    with: 170,
-  },
-};
 
 export default TableDemo;

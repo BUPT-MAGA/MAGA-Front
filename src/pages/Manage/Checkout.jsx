@@ -1,26 +1,10 @@
 import React from 'react';
-import {
-  Card,
-  Cascader,
-  Tooltip,
-  Icon,
-  Form,
-  Checkbox,
-  Select,
-  Input,
-  Button,
-  Col,
-  notification,
-  message,
-  BackTop,
-} from 'antd';
-import CustomBreadcrumb from '../../components/CustomBreadcrumb/index';
+import { Card, Form, Input, Button, notification, message, BackTop } from 'antd';
 import request from '../../utils/request';
+import CustomBreadcrumb from '../../components/CustomBreadcrumb/index';
 
 const FormItem = Form.Item;
-const Option = Select.Option;
 
-@Form.create()
 class FormDemo1 extends React.Component {
   handleSubmit = (e) => {
     e.preventDefault();
@@ -30,8 +14,8 @@ class FormDemo1 extends React.Component {
       } else {
         try {
           console.log(values);
-          await request.post('/api/checkin', values);
-          message.success('提交成功');
+          await request.delete(`/api/checkin/${values.username}`);
+          message.success('退房成功');
         } catch (e) {
           notification.error({
             message: `退房失败`,
@@ -69,8 +53,8 @@ class FormDemo1 extends React.Component {
 
     return (
       <div>
-        <CustomBreadcrumb arr={['住户管理', '用户入住']} />
-        <Card bordered={false} title="用户入住">
+        <CustomBreadcrumb arr={['住户管理', '用户退房']} />
+        <Card bordered={false} title="用户退房">
           <Form
             layout="horizontal"
             style={{ width: '70%', margin: '0 auto' }}
@@ -86,20 +70,9 @@ class FormDemo1 extends React.Component {
                 ],
               })(<Input />)}
             </FormItem>
-            <FormItem label="房间号" {...formItemLayout}>
-              {getFieldDecorator('roomId', {
-                rules: [
-                  {
-                    pattern: /^[0-9][0-9][0-9]$/,
-                    required: true,
-                    message: '请输入正确的房间号',
-                  },
-                ],
-              })(<Input />)}
-            </FormItem>
             <FormItem style={{ textAlign: 'center' }} {...tailFormItemLayout}>
               <Button type="primary" htmlType="submit" disabled={false}>
-                提交
+                退房
               </Button>
             </FormItem>
           </Form>

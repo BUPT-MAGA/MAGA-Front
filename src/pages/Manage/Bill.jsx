@@ -90,8 +90,7 @@ class TableDemo extends React.Component {
       } else {
         console.log(values);
         try {
-          let detail = (await request.get(`/api/detail/${values.username}`))
-            .data;
+          let detail = (await request.get(`/api/detail/${values.username}`)).data;
           console.log(detail);
           for (let log of detail.logs) {
             log.curTemp = log.curTemp.toFixed(2);
@@ -138,12 +137,7 @@ class TableDemo extends React.Component {
     return (
       <div>
         <CustomBreadcrumb arr={['用户账单']} />
-        <Card
-          bordered={false}
-          title="用户账单"
-          style={{ marginBottom: 10 }}
-          id="basicUsage"
-        >
+        <Card bordered={false} title="用户账单" style={{ marginBottom: 10 }} id="basicUsage">
           <Form onSubmit={this.handleSubmit}>
             <FormItem label="用户名" {...formItemLayout}>
               {getFieldDecorator('username', {
@@ -178,11 +172,7 @@ class TableDemo extends React.Component {
           </Row>
 
           <Title>详单</Title>
-          <Table
-            dataSource={this.state.logs}
-            columns={columns1}
-            style={styles.tableStyle}
-          />
+          <Table dataSource={this.state.logs} columns={columns1} style={styles.tableStyle} />
         </Card>
         <BackTop visibilityHeight={200} style={{ right: 50 }} />
       </div>
