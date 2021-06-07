@@ -1,86 +1,94 @@
 import React from 'react';
 import { Card, Form, Input, Button, notification, message, BackTop } from 'antd';
+import { CreditCardOutlined, NumberOutlined } from '@ant-design/icons';
+import ProForm, { ProFormText } from '@ant-design/pro-form';
+import { PageHeaderWrapper } from '@ant-design/pro-layout';
+// import { useIntl } from 'umi';
 import request from '../../utils/request';
-import CustomBreadcrumb from '../../components/CustomBreadcrumb/index';
 
-const FormItem = Form.Item;
-
-class FormDemo1 extends React.Component {
-  handleSubmit = (e) => {
-    e.preventDefault();
-    this.props.form.validateFieldsAndScroll(async (err, values) => {
-      if (err) {
-        message.warning('请先填写正确的表单');
-      } else {
-        try {
-          console.log(values);
-          await request.delete(`/api/checkin/${values.username}`);
-          message.success('退房成功');
-        } catch (e) {
-          notification.error({
-            message: `退房失败`,
-            description: e.message,
-          });
-        }
-      }
+const handleSubmit = async (values) => {
+  try {
+    console.log(values);
+    await request.delete(`/api/checkin/${values.username}`);
+  } catch (e) {
+    notification.error({
+      message: `退房失败`,
+      description: e.message,
     });
-  };
-
-  render() {
-    const { getFieldDecorator } = this.props.form;
-    const formItemLayout = {
-      labelCol: {
-        xs: { span: 24 },
-        sm: { span: 4 },
-      },
-      wrapperCol: {
-        xs: { span: 24 },
-        sm: { span: 12 },
-      },
-    };
-    const tailFormItemLayout = {
-      wrapperCol: {
-        xs: {
-          span: 24,
-          offset: 0,
-        },
-        sm: {
-          span: 12,
-          offset: 4,
-        },
-      },
-    };
-
-    return (
-      <div>
-        <CustomBreadcrumb arr={['住户管理', '用户退房']} />
-        <Card bordered={false} title="用户退房">
-          <Form
-            layout="horizontal"
-            style={{ width: '70%', margin: '0 auto' }}
-            onSubmit={this.handleSubmit}
-          >
-            <FormItem label="住户名" {...formItemLayout}>
-              {getFieldDecorator('username', {
-                rules: [
-                  {
-                    required: true,
-                    message: '请输入正确的名称',
-                  },
-                ],
-              })(<Input />)}
-            </FormItem>
-            <FormItem style={{ textAlign: 'center' }} {...tailFormItemLayout}>
-              <Button type="primary" htmlType="submit" disabled={false}>
-                退房
-              </Button>
-            </FormItem>
-          </Form>
-        </Card>
-        <BackTop visibilityHeight={200} style={{ right: 50 }} />
-      </div>
-    );
   }
-}
+};
 
-export default FormDemo1;
+const CheckOutBox = () => {
+  return (
+    <PageHeaderWrapper>
+      <div
+        style={{
+          width: 330,
+          margin: 'auto',
+        }}
+      >
+        <ProForm
+          onFinish={async (values) => {
+            // await waitTime(2000);
+            await handleSubmit(values);
+            message.success('退房成功');
+          }}
+          submitter={{
+            searchConfig: {
+              submitText: '确认退房',
+            },
+            render: (_, dom) => dom.pop(),
+            submitButtonProps: {
+              size: 'large',
+              style: {
+                width: '100%',
+              },
+            },
+          }}
+        >
+          <ProFormText
+            fieldProps={{
+              size: 'large',
+              prefix: <CreditCardOutlined />,
+            }}
+            name="username"
+            label="客户身份证号"
+            tooltip="身份证长度为 18 位"
+            placeholder="请输入身份证号"
+            rules={[
+              {
+                required: true,
+                message: '请输入身份证号!',
+              },
+              {
+                pattern: /^\d{18}$/,
+                message: '不合法的身份证号!',
+              },
+            ]}
+          />
+          {/* <ProFormText
+            fieldProps={{
+              size: 'large',
+              prefix: <NumberOutlined />,
+            }}
+            name="roomId"
+            label="房间号"
+            placeholder="请输入房间号"
+            rules={[
+              {
+                required: true,
+                message: '请输入房间号!',
+              },
+              {
+                pattern: /^\d{3}$/,
+                message: '不合法的房间号!',
+              },
+            ]}
+          /> */}
+        </ProForm>
+      </div>
+    </PageHeaderWrapper>
+  );
+};
+
+export default CheckOutBox;

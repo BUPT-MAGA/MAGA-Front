@@ -3,7 +3,7 @@ import { notification, message } from 'antd';
 import { CreditCardOutlined, NumberOutlined } from '@ant-design/icons';
 import ProForm, { ProFormText } from '@ant-design/pro-form';
 import { PageHeaderWrapper } from '@ant-design/pro-layout';
-import { useIntl } from 'umi';
+// import { useIntl } from 'umi';
 import request from '../../utils/request';
 
 const handleSubmit = async (values) => {

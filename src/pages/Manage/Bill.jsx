@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   Col,
   Statistic,
@@ -12,14 +12,14 @@ import {
   Input,
   Row,
 } from 'antd';
-import CustomBreadcrumb from '../../components/CustomBreadcrumb/index';
+import { CreditCardOutlined, NumberOutlined } from '@ant-design/icons';
+import ProForm, { ProFormText } from '@ant-design/pro-form';
+import { useIntl, FormattedMessage } from 'umi';
+import { PageHeaderWrapper } from '@ant-design/pro-layout';
 import request from '../../utils/request';
-
-import { Typography } from 'antd';
+import { Typography, Alert } from 'antd';
 
 const { Title } = Typography;
-
-const FormItem = Form.Item;
 
 const columns1 = [
   {
@@ -75,121 +75,109 @@ function getWindSpeedName(s) {
   }
 }
 
-@Form.create()
-class TableDemo extends React.Component {
-  state = {
-    fee: 0,
-    logs: [],
-  };
+export default () => {
+  const [fee, setFee] = useState(0);
+  const [logs, setLogs] = useState([]);
 
-  handleSubmit = (e) => {
-    e.preventDefault();
-    this.props.form.validateFieldsAndScroll(async (err, values) => {
-      if (err) {
-        message.warning('请先输入用户名');
-      } else {
-        console.log(values);
-        try {
-          let detail = (await request.get(`/api/detail/${values.username}`)).data;
-          console.log(detail);
-          for (let log of detail.logs) {
-            log.curTemp = log.curTemp.toFixed(2);
-            log.fee = log.fee.toFixed(2);
-            log.timestamp = new Date(log.timestamp).toTimeString();
-            log.windSpeed = getWindSpeedName(log.windSpeed);
-          }
-          this.setState({ fee: detail.fee, logs: detail.logs });
-
-          message.success('打印成功');
-        } catch (e) {
-          message.error('失败');
-        }
-
-        // console.log(values)
+  const handleSubmit = async (values) => {
+    console.log(values);
+    try {
+      let detail = (await request.get(`/api/detail/${values.username}`)).data;
+      for (let log of detail.logs) {
+        log.curTemp = log.curTemp.toFixed(2);
+        log.fee = log.fee.toFixed(2);
+        log.timestamp = new Date(log.timestamp).toTimeString();
+        log.windSpeed = getWindSpeedName(log.windSpeed);
       }
-    });
+      setFee(detail.fee);
+      setLogs(detail.logs);
+    } catch (e) {
+      message.error('查询失败');
+    }
   };
 
-  render() {
-    const { getFieldDecorator } = this.props.form;
-    const formItemLayout = {
-      labelCol: {
-        xs: { span: 24 },
-        sm: { span: 4 },
-      },
-      wrapperCol: {
-        xs: { span: 24 },
-        sm: { span: 12 },
-      },
-    };
-    const tailFormItemLayout = {
-      wrapperCol: {
-        xs: {
-          span: 24,
-          offset: 0,
-        },
-        sm: {
-          span: 12,
-          offset: 4,
-        },
-      },
-    };
-    return (
-      <div>
-        <CustomBreadcrumb arr={['用户账单']} />
-        <Card bordered={false} title="用户账单" style={{ marginBottom: 10 }} id="basicUsage">
-          <Form onSubmit={this.handleSubmit}>
-            <FormItem label="用户名" {...formItemLayout}>
-              {getFieldDecorator('username', {
-                rules: [
+  const intl = useIntl();
+  return (
+    <PageHeaderWrapper>
+      <Card bordered={false} title="" style={{ marginBottom: 10 }} id="basicUsage">
+        <div
+          style={{
+            width: 330,
+            margin: 'auto',
+          }}
+        ></div>
+
+        <Row style={{ marginBottom: 10 }}>
+          <Col span={10}>
+            <Card>
+              <Statistic
+                title="费用总计"
+                value={fee}
+                precision={2}
+                prefix={<Icon type="pay-circle" />}
+                suffix="元"
+              />
+            </Card>
+          </Col>
+          <Col>
+            <ProForm
+              onFinish={async (values) => {
+                handleSubmit(values);
+                message.success('查询成功');
+              }}
+              submitter={{
+                searchConfig: {
+                  submitText: '查询账单',
+                },
+                render: (_, dom) => dom.pop(),
+                submitButtonProps: {
+                  size: 'large',
+                  style: {
+                    width: '100%',
+                  },
+                },
+              }}
+            >
+              <ProFormText
+                fieldProps={{
+                  size: 'large',
+                  prefix: <CreditCardOutlined />,
+                }}
+                name="username"
+                label="客户身份证号"
+                tooltip="身份证长度为 18 位"
+                placeholder="请输入身份证号"
+                rules={[
                   {
                     required: true,
-                    message: '请输入正确的客户名',
+                    message: '请输入身份证号!',
                   },
-                ],
-              })(<Input />)}
-            </FormItem>
-            <FormItem style={{ textAlign: 'center' }} {...tailFormItemLayout}>
-              <Button type="primary" htmlType="submit" disabled={false}>
-                确定
-              </Button>
-            </FormItem>
-          </Form>
+                  // {
+                  //   pattern: /^\d{18}$/,
+                  //   message: '不合法的身份证号!',
+                  // },
+                ]}
+              />
+            </ProForm>
+          </Col>
+        </Row>
 
-          <Title>账单</Title>
-          <Row style={{ marginBottom: 10 }}>
-            <Col span={6}>
-              <Card>
-                <Statistic
-                  title="当前账单费用"
-                  value={this.state.fee}
-                  precision={2}
-                  prefix={<Icon type="pay-circle" />}
-                  suffix="元"
-                />
-              </Card>
-            </Col>
-          </Row>
-
-          <Title>详单</Title>
-          <Table dataSource={this.state.logs} columns={columns1} style={styles.tableStyle} />
-        </Card>
-        <BackTop visibilityHeight={200} style={{ right: 50 }} />
-      </div>
-    );
-  }
-}
-
-const styles = {
-  tableStyle: {
-    width: '80%',
-  },
-  affixBox: {
-    position: 'absolute',
-    top: 100,
-    right: 50,
-    with: 170,
-  },
+        <Alert
+          message={intl.formatMessage({
+            id: '费用详单',
+            defaultMessage: '费用详单',
+          })}
+          type="success"
+          showIcon
+          // banner
+          // style={{
+          // margin: -12,
+          // marginBottom: 24,
+          // }}
+        />
+        <Table dataSource={logs} columns={columns1} />
+      </Card>
+      <BackTop visibilityHeight={200} style={{ right: 50 }} />
+    </PageHeaderWrapper>
+  );
 };
-
-export default TableDemo;

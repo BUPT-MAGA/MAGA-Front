@@ -1,6 +1,6 @@
 import React from 'react';
 import { Card, Table, BackTop } from 'antd';
-import CustomBreadcrumb from '../../components/CustomBreadcrumb/index';
+import { PageHeaderWrapper } from '@ant-design/pro-layout';
 import request from '../../utils/request';
 
 const columns1 = [
@@ -35,22 +35,27 @@ class TableDemo extends React.Component {
 
   render() {
     return (
-      <div>
-        <CustomBreadcrumb arr={['用户管理', '住房信息']} />
-        <Card
-          //   bordered={false}
-          title="住房信息"
-          style={{ marginBottom: 10 }}
-          id="roominfo"
-        >
-          <Table
-            dataSource={this.state.data}
-            columns={columns1}
-            // style={styles.tableStyle}
-          />
+      <PageHeaderWrapper>
+        <Card bordered={false} title="" style={{ marginBottom: 10 }} id="basicUsage">
+          <Table dataSource={this.state.data} columns={columns1} />
         </Card>
         <BackTop visibilityHeight={200} style={{ right: 50 }} />
-      </div>
+      </PageHeaderWrapper>
+
+      // <div>
+      //   <CustomBreadcrumb arr={['用户管理', '住房信息']} />
+      //   <Card
+      //     title="住房信息"
+      //     style={{ marginBottom: 10 }}
+      //     id="roominfo"
+      //   >
+      //     <Table
+      //       dataSource={this.state.data}
+      //       columns={columns1}
+      //     />
+      //   </Card>
+      //   <BackTop visibilityHeight={200} style={{ right: 50 }} />
+      // </div>
     );
   }
 }
