@@ -33,21 +33,6 @@ export default [
                 icon: 'smile',
                 component: './Welcome',
               },
-              {
-                path: '/admin',
-                name: 'admin',
-                icon: 'crown',
-                component: './Admin',
-                // authority: ['admin', 'user'],
-                routes: [
-                  {
-                    path: '/admin/sub-page',
-                    name: 'sub-page',
-                    component: './Welcome',
-                    // authority: ['admin', 'user'],
-                  },
-                ],
-              },
               //   {
               //     path: '/list',
               //     name: 'list.table-list',

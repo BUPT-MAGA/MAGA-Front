@@ -139,10 +139,10 @@ const BasicLayout = (props) => {
         menuDataRef.current = menuData || [];
         return menuData || [];
       }}
-      waterMarkProps={{
-        content: 'MAGA',
-        fontColor: 'rgba(24,144,255,0.15)',
-      }}
+      // waterMarkProps={{
+      //   content: 'MAGA',
+      //   fontColor: 'rgba(24,144,255,0.15)',
+      // }}
     >
       <Authorized authority={authorized.authority} noMatch={noMatch}>
         {children}

@@ -1,7 +1,8 @@
-import React from 'react';
-import { Card, Table, BackTop } from 'antd';
-import CustomBreadcrumb from '../components/CustomBreadcrumb/index';
+import React, { useState, useRef, useEffect } from 'react';
+import { Row, Col, Card, Spin, Table, BackTop, message, Slider, InputNumber } from 'antd';
+import { PageHeaderWrapper } from '@ant-design/pro-layout';
 import request from '../utils/request';
+import { ProFormSlider } from '@ant-design/pro-form';
 
 const columns1 = [
   {
@@ -55,62 +56,91 @@ function getWindSpeedName(s) {
   }
 }
 
-class TableDemo extends React.Component {
-  state = {
-    data: [],
-  };
+function useInterval(callback, delay) {
+  const savedCallback = useRef();
 
-  async updateInfo() {
+  useEffect(() => {
+    savedCallback.current = callback;
+  });
+
+  useEffect(() => {
+    function tick() {
+      savedCallback.current();
+    }
+
+    let id = setInterval(tick, delay);
+    return () => clearInterval(id);
+  }, [delay]);
+}
+
+function timeout(delay) {
+  return new Promise((res) => setTimeout(res, delay));
+}
+
+export default () => {
+  const [data, setData] = useState([]);
+  const [refreshRate, setRefreshRate] = useState(4000);
+  const [loading, setLoading] = useState(false);
+
+  useInterval(() => {
+    updateInfo();
+    console.log('refreshing...');
+  }, refreshRate);
+
+  const updateInfo = async () => {
+    setLoading(true);
     try {
-      let data = (await request.get('/api/status')).data;
-      for (let r of data) {
+      let newData = (await request.get('/api/status')).data;
+      for (let r of newData) {
         r.windSpeed = getWindSpeedName(r.windSpeed);
         r.curTemp = r.curTemp.toFixed(2);
       }
-      this.setState({ data: data });
-    } catch (e) {}
-  }
+      setData(newData);
+    } catch (e) {
+      message.error('刷新失败');
+    }
+    await timeout(500);
+    setLoading(false);
+  };
 
-  async componentDidMount() {
-    await this.updateInfo();
-    this.interval = setInterval(async () => await this.updateInfo(), 1000);
-  }
+  const onSlideChange = (value) => {
+    console.log(value);
+    setRefreshRate(value * 1000);
+  };
 
-  componentWillUnmount() {
-    clearInterval(this.interval);
-  }
-  render() {
-    return (
-      <div>
-        <CustomBreadcrumb arr={['从控机', '信息显示']} />
-        <Card
-          bordered={false}
-          title="空调信息"
-          style={{ marginBottom: 10 }}
-          id="basicUsage"
-        >
-          <Table
-            dataSource={this.state.data}
-            columns={columns1}
-            style={styles.tableStyle}
+  return (
+    <PageHeaderWrapper>
+      <Col span={1}>刷新频率</Col>
+      <Row>
+        <Col span={6}>
+          <Slider
+            min={0.5}
+            max={60}
+            value={refreshRate / 1000}
+            onChange={onSlideChange}
+            marks={{
+              1: '1s',
+              60: '60s',
+            }}
           />
-        </Card>
-        <BackTop visibilityHeight={200} style={{ right: 50 }} />
-      </div>
-    );
-  }
-}
-
-const styles = {
-  tableStyle: {
-    width: '80%',
-  },
-  affixBox: {
-    position: 'absolute',
-    top: 100,
-    right: 50,
-    with: 170,
-  },
+        </Col>
+        <Col span={2}>
+          <InputNumber
+            min={0.5}
+            max={60}
+            style={{ margin: '0 16px' }}
+            value={refreshRate / 1000}
+            onChange={onSlideChange}
+            formatter={(value) => `${value}s`}
+            parser={(value) => value.replace('s', '')}
+          />
+        </Col>
+        <Col span={1}>
+          <Spin spinning={loading} tip="Loading..." />
+        </Col>
+      </Row>
+      <Table dataSource={data} columns={columns1} style={{ marginTop: 32 }} />
+      <BackTop visibilityHeight={200} style={{ right: 50 }} />
+    </PageHeaderWrapper>
+  );
 };
-
-export default TableDemo;
