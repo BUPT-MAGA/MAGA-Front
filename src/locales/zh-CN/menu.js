@@ -52,5 +52,5 @@ export default {
   'menu.settings': '系统设置',
   'menu.manage': '用户管理',
   'menu.monitor': '实时监控',
-  'menu.report': '统计报表',
+  'menu.report': '酒店报表',
 };

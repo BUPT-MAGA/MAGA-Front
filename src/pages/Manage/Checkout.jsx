@@ -9,7 +9,7 @@ import request from '../../utils/request';
 const handleSubmit = async (values) => {
   try {
     console.log(values);
-    await request.delete(`/api/checkin/${values.username}`);
+    await request.post(`/api/checkout`, values);
   } catch (e) {
     notification.error({
       message: `退房失败`,
@@ -51,7 +51,7 @@ const CheckOutBox = () => {
               size: 'large',
               prefix: <CreditCardOutlined />,
             }}
-            name="username"
+            name="user_id"
             label="客户身份证号"
             tooltip="身份证长度为 18 位"
             placeholder="请输入身份证号"
@@ -60,18 +60,18 @@ const CheckOutBox = () => {
                 required: true,
                 message: '请输入身份证号!',
               },
-              {
-                pattern: /^\d{18}$/,
-                message: '不合法的身份证号!',
-              },
+              // {
+              //   pattern: /^\d{18}$/,
+              //   message: '不合法的身份证号!',
+              // },
             ]}
           />
-          {/* <ProFormText
+          <ProFormText
             fieldProps={{
               size: 'large',
               prefix: <NumberOutlined />,
             }}
-            name="roomId"
+            name="room_id"
             label="房间号"
             placeholder="请输入房间号"
             rules={[
@@ -84,7 +84,7 @@ const CheckOutBox = () => {
                 message: '不合法的房间号!',
               },
             ]}
-          /> */}
+          />
         </ProForm>
       </div>
     </PageHeaderWrapper>

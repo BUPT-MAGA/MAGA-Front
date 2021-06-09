@@ -25,13 +25,7 @@ export default [
             routes: [
               {
                 path: '/',
-                redirect: '/welcome',
-              },
-              {
-                path: '/welcome',
-                name: 'welcome',
-                icon: 'smile',
-                component: './Welcome',
+                redirect: '/settings',
               },
               //   {
               //     path: '/list',
@@ -43,19 +37,7 @@ export default [
                 path: '/settings',
                 name: 'settings',
                 icon: 'setting',
-                component: '../layouts/BlankLayout',
-                routes: [
-                  {
-                    name: '主控信息',
-                    path: '/settings/hostinfo',
-                    component: './settings/Hostinfo',
-                  },
-                  {
-                    name: '主控设置',
-                    path: '/settings/hostset',
-                    component: './settings/Hostset',
-                  },
-                ],
+                component: './settings',
               },
               {
                 path: '/manage',
@@ -95,7 +77,19 @@ export default [
                 path: '/statistics',
                 name: 'report',
                 icon: 'pie-chart',
-                component: './Statistics',
+                component: '../layouts/BlankLayout',
+                routes: [
+                  {
+                    name: '酒店报表',
+                    path: '/statistics/hotel',
+                    component: './Statistics/Hotel',
+                  },
+                  {
+                    name: '房间报表',
+                    path: '/statistics/room',
+                    component: './Statistics/Room',
+                  },
+                ],
               },
 
               {

@@ -15,7 +15,7 @@ const Model = {
       try {
         const response = yield call(AccountLogin, payload);
         console.log(response.data);
-        localStorage.setItem('accessToken', response.data.accessToken);
+        localStorage.setItem('access_token', response.data.access_token);
         yield put({
           type: 'changeLoginStatus',
           payload: response,
@@ -54,7 +54,7 @@ const Model = {
       try {
         const response = yield call(AccountSignUp, payload);
         console.log(response);
-        message.success("注册成功！")
+        message.success('注册成功！');
       } catch (e) {
         message.error('注册失败');
       }

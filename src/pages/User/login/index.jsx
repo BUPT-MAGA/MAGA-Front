@@ -35,8 +35,10 @@ const Login = (props) => {
     console.log(values);
     const { dispatch } = props;
     if (type === 'login') {
+      values = { ...values, ['grant_type']: 'password' };
       dispatch({
         type: 'login/login',
+
         payload: { ...values, type },
       });
     } else {
@@ -212,9 +214,9 @@ const Login = (props) => {
             style={{
               float: 'right',
             }}
-            onClick={() => message.warn("请联系管理员！")}
+            onClick={() => message.warn('请联系管理员！')}
           >
-            <FormattedMessage id="pages.login.forgotPassword" defaultMessage="Forget password"/>
+            <FormattedMessage id="pages.login.forgotPassword" defaultMessage="Forget password" />
           </a>
         </div>
       </ProForm>

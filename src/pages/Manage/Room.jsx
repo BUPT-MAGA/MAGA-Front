@@ -6,15 +6,15 @@ import request from '../../utils/request';
 const columns1 = [
   {
     title: '房间号',
-    dataIndex: 'roomId',
+    dataIndex: 'room_id',
   },
   {
     title: '入住状态',
-    dataIndex: 'active',
+    dataIndex: 'status',
   },
   {
     title: '住户身份证',
-    dataIndex: 'username',
+    dataIndex: 'user_id',
   },
 ];
 
@@ -25,7 +25,7 @@ class TableDemo extends React.Component {
 
   async componentDidMount() {
     try {
-      const data = (await request.get('/api/checkin')).data;
+      const data = (await request.get('/api/room_info')).data;
       console.log(data);
       this.setState({
         data: data,

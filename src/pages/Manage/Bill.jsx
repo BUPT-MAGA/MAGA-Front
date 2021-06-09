@@ -27,7 +27,7 @@ const columns1 = [
   },
   {
     title: '房间号',
-    dataIndex: 'roomId',
+    dataIndex: 'room_id',
   },
   {
     title: '事件类型',
@@ -81,7 +81,8 @@ export default () => {
   const handleSubmit = async (values) => {
     console.log(values);
     try {
-      let detail = (await request.get(`/api/detail/${values.username}`)).data;
+      let detail = (await request.get(`/api/bill?user_id=${values.user_id}`)).data;
+      console.log(detail);
       for (let log of detail.logs) {
         log.curTemp = log.curTemp.toFixed(2);
         log.fee = log.fee.toFixed(2);
@@ -134,7 +135,7 @@ export default () => {
                     size: 'large',
                     prefix: <CreditCardOutlined />,
                   }}
-                  name="username"
+                  name="user_id"
                   // label="客户身份证号"
                   tooltip="身份证长度为 18 位"
                   placeholder="请输入身份证号"

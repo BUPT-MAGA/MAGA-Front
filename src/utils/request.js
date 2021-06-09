@@ -50,29 +50,25 @@ const errorHandler = (error) => {
  */
 
 // const request = extend({
-// //   prefix: 'http://127.0.0.1:8923',
-//   errorHandler,
-//   // default error handling
-//   credentials: 'include', // Does the default request bring cookies
+// prefix: 'http://localhost:8923',
+// errorHandler,
+// default error handling
+// credentials: 'include', // Does the default request bring cookies
 // });
 
 let request = axios.create({
-  baseURL: 'http://localhost:8923',
+  // baseURL: 'http://localhost:8923',
+  // baseURL: 'http://123.60.215.79:8000',
   timeout: 5000,
 });
 
-request.interceptors.request.use(
-  (config) => {
-    let token = localStorage.getItem('accessToken');
-    if (token) {
-      config.headers['Authorization'] = 'Bearer ' + token;
-    }
-    return config;
-  },
-  //   (error) => {
-  //     return Promise.reject(error);
-  //   },
-);
+request.interceptors.request.use((config) => {
+  let token = localStorage.getItem('access_token');
+  if (token) {
+    config.headers['Authorization'] = 'Bearer ' + token;
+  }
+  return config;
+});
 
 //   request.interceptors.response.use(
 //     async (data) => {

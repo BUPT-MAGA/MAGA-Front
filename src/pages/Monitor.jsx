@@ -7,39 +7,35 @@ import { ProFormSlider } from '@ant-design/pro-form';
 const columns1 = [
   {
     title: '房间号',
-    dataIndex: 'roomId',
+    dataIndex: 'room_id',
   },
   {
-    title: '运行状态',
+    title: '状态',
     dataIndex: 'status',
   },
   {
-    title: '空调模式',
-    dataIndex: 'windMode',
+    title: '模式',
+    dataIndex: 'wind_mode',
   },
   {
-    title: '空调风速',
-    dataIndex: 'windSpeed',
+    title: '风速',
+    dataIndex: 'wind_speed',
   },
   {
     title: '当前温度',
-    dataIndex: 'curTemp',
-  },
-  {
-    title: '初始温度',
-    dataIndex: 'initialTemp',
+    dataIndex: 'current_temp',
   },
   {
     title: '目标温度',
-    dataIndex: 'targetTemp',
+    dataIndex: 'target_temp',
   },
   {
     title: '服务时长',
-    dataIndex: 'servedTime',
+    dataIndex: 'served_time',
   },
   {
     title: '等待时间',
-    dataIndex: 'waitTime',
+    dataIndex: 'wait_time',
   },
 ];
 
@@ -90,10 +86,11 @@ export default () => {
   const updateInfo = async () => {
     setLoading(true);
     try {
-      let newData = (await request.get('/api/status')).data;
+      let newData = (await request.get('/api/room_status')).data;
+      console.log(newData);
       for (let r of newData) {
-        r.windSpeed = getWindSpeedName(r.windSpeed);
-        r.curTemp = r.curTemp.toFixed(2);
+        r.wind_speed = getWindSpeedName(r.wind_speed);
+        r.current_temp = r.current_temp.toFixed(2);
       }
       setData(newData);
     } catch (e) {

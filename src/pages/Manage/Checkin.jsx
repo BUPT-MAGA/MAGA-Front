@@ -53,7 +53,7 @@ const CheckInBox = () => {
               size: 'large',
               prefix: <CreditCardOutlined />,
             }}
-            name="username"
+            name="user_id"
             label="客户身份证号"
             tooltip="身份证长度为 18 位"
             placeholder="请输入身份证号"
@@ -62,10 +62,10 @@ const CheckInBox = () => {
                 required: true,
                 message: '请输入身份证号!',
               },
-              {
-                pattern: /^\d{18}$/,
-                message: '不合法的身份证号!',
-              },
+              // {
+              //   pattern: /^\d{18}$/,
+              //   message: '不合法的身份证号!',
+              // },
             ]}
           />
           <ProFormText
@@ -73,7 +73,7 @@ const CheckInBox = () => {
               size: 'large',
               prefix: <NumberOutlined />,
             }}
-            name="roomId"
+            name="room_id"
             label="房间号"
             placeholder="请输入房间号"
             rules={[
