@@ -16,13 +16,11 @@ export default [
       },
       {
         path: '/',
+        redirect: '/settings',
+      },
+      {
+        path: '/login',
         redirect: '/user/login',
-        routes: [
-          {
-            path: '/login',
-            redirect: 'user/login',
-          },
-        ],
       },
       {
         path: '/',
