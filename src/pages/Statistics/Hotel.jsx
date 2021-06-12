@@ -82,6 +82,7 @@ export default () => {
             查询报表
           </Button>
         </Form>
+
         <Table style={{ marginTop: 32 }} dataSource={report} columns={columns1} />
         <Form.Item style={{ textAlign: 'center' }}>
           <Button type="primary" htmlType="submit" disabled={false} onClick={window.print}>

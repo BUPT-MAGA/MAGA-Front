@@ -5,6 +5,7 @@ import { getStatus, getWindMode, getWindSpeedName } from '../../utils/utils';
 import ProForm, { ProFormText } from '@ant-design/pro-form';
 import { CreditCardOutlined, NumberOutlined } from '@ant-design/icons';
 import { PageHeaderWrapper } from '@ant-design/pro-layout';
+import { ChartCard, Bar, Field, MiniArea, MiniBar, MiniProgress } from 'ant-design-pro/lib/Charts';
 import moment from 'moment';
 
 const columns1 = [
@@ -38,30 +39,63 @@ const worker = {
   scale: 3,
 };
 
+const MONTH_FORMAT = 'YYYY-MM';
+const DAY_FORMAT = 'YYYY-MM-DD';
+
 export default () => {
-  const [report, setReport] = useState([]);
+  // const [report, setReport] = useState([]);
+  const [fees, setFees] = useState([]);
+  const [openCntSum, setOpenCntSum] = useState(0);
+  const [openCnts, setOpenCnts] = useState([]);
 
   const handleSubmit = async (values) => {
     console.log(values);
     console.log(values.date.unix());
     // try {
-    const newReport = (
+    const report = (
       await request.get(
-        `/api/report_room?timestamp=${values.date.unix()}&scale=${values.scale}&room_id=${
+        `/api/report_room?timestamp=${values.date.unix()}&span=12&scale=${values.scale}&room_id=${
           values.room_id
         }`,
       )
     ).data;
-    console.log(newReport);
-    // for (let r of newReport) {
-    // r.total_fee = r.total_fee.toFixed(2);
-    // }
+    console.log(report);
+    let newFees = [];
+    let newOpenCnts = [];
+    let newOpenCntSum = 0;
+    for (let key in report) {
+      // r.total_fee = r.total_fee.toFixed(2);
+      const val = report[key];
+      key = parseInt(key);
+      const date_formatted = moment.unix(key).format(values.scale == 3 ? MONTH_FORMAT : DAY_FORMAT);
+      newFees.push({
+        x: `${date_formatted}`,
+        y: val.sum_fee,
+      });
+      newOpenCnts.push({
+        x: `${date_formatted}`,
+        y: val.open_cnt,
+      });
+      newOpenCntSum += val.open_cnt;
+    }
+    setFees(newFees);
+    setOpenCnts(newOpenCnts);
+    setOpenCntSum(newOpenCntSum);
+    console.log(newFees);
     // setReport(newReport);
     message.success('获取报表成功');
     // } catch (e) {
     // message.error('获取报表失败');
     // }
   };
+
+  let salesData = [];
+  for (let i = 0; i < 6; i += 1) {
+    salesData.push({
+      x: `${i + 1}月`,
+      y: Math.floor(Math.random() * 1000) + 200,
+    });
+  }
 
   return (
     <PageHeaderWrapper>
@@ -97,7 +131,22 @@ export default () => {
             查询报表
           </Button>
         </Form>
-        <Table style={{ marginTop: 32 }} dataSource={report} columns={columns1} />
+
+
+        <Bar style={{ margin: '0 16px' }} height={200} title="消费额总计" data={fees} />
+
+        <ChartCard title="温控请求总次数" total={openCntSum} contentHeight={134}>
+          {/* <NumberInfo
+          subTitle={<span>本周访问</span>}
+          total={numeral(12321).format('0,0')}
+          status="up"
+          subTotal={17.1}
+        /> */}
+          <MiniArea line height={45} title="温控请求次数" data={openCnts} />
+        </ChartCard>
+
+        {/* <Table style={{ marginTop: 32 }} dataSource={report} columns={columns1} /> */}
+
         <Form.Item style={{ textAlign: 'center' }}>
           <Button type="primary" htmlType="submit" disabled={false} onClick={window.print}>
             打印

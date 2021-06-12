@@ -45,6 +45,7 @@
     "not ie <= 10"
   ],
   "dependencies": {
+    "@ant-design/charts": "^1.1.13",
     "@ant-design/icons": "^4.0.0",
     "@ant-design/pro-card": "^1.13.2",
     "@ant-design/pro-descriptions": "^1.2.0",
@@ -52,6 +53,7 @@
     "@ant-design/pro-layout": "^6.9.0",
     "@ant-design/pro-table": "^2.17.0",
     "@umijs/route-utils": "^1.0.33",
+    "ant-design-pro": "^2.3.2",
     "antd": "^4.15.0",
     "axios": "^0.21.1",
     "classnames": "^2.2.6",

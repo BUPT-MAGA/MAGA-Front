@@ -27,7 +27,7 @@ class Settings extends React.Component {
     const target = value === true ? 2 : 1;
     const MSG = value === true ? '启动成功！' : '关闭成功！';
     request
-      .get(`/api/switch?action=${target}`)
+      .get(`/api/settings/switch?action=${target}`)
       .then((response) => {
         console.log(response), message.success(MSG);
       })
@@ -41,7 +41,7 @@ class Settings extends React.Component {
     const target = value.target.value;
     const MSG = target === 1 ? '供暖模式启动' : '制冷模式启动！';
     request
-      .get(`/api/mode?mode=${target}`)
+      .get(`/api/settings/mode?mode=${target}`)
       .then((response) => {
         console.log(response), message.success(MSG);
       })
@@ -54,7 +54,7 @@ class Settings extends React.Component {
   onTempChange = async (value) => {
     const MSG = `默认温度：${value}°C`;
     request
-      .get(`/api/temp?temp=${value}`)
+      .get(`/api/settings/temp?temp=${value}`)
       .then((response) => {
         console.log(response), message.success(MSG);
       })
@@ -68,7 +68,7 @@ class Settings extends React.Component {
     console.log(value);
     const MSG = `计费标准：${value}元`;
     request
-      .get(`/api/fee?fee=${value}`)
+      .get(`/api/settings/fee?fee=${value}`)
       .then((response) => {
         console.log(response), message.success(MSG);
       })
@@ -82,7 +82,7 @@ class Settings extends React.Component {
     console.log(value);
     const MSG = `从机数量：${value}台`;
     request
-      .get(`/api/slave?slave=${value}`)
+      .get(`/api/settings/slave?slave=${value}`)
       .then((response) => {
         console.log(response), message.success(MSG);
       })
@@ -93,7 +93,7 @@ class Settings extends React.Component {
   };
 
   async componentDidMount() {
-    const initData = (await request.get('/api/init')).data;
+    const initData = (await request.get('/api/settings/init')).data;
     console.log('init values');
     console.log(initData);
     this.setState(initData, () => {
