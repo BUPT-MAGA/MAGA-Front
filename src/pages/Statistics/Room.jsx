@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Card, Table, DatePicker, BackTop, Button, Form, message, Radio } from 'antd';
+import { InputNumber, Card, Table, DatePicker, BackTop, Button, Form, message, Radio } from 'antd';
 import request from '../../utils/request';
 import { getStatus, getWindMode, getWindSpeedName } from '../../utils/utils';
 import ProForm, { ProFormText } from '@ant-design/pro-form';
@@ -46,13 +46,17 @@ export default () => {
     console.log(values.date.unix());
     // try {
     const newReport = (
-      await request.get(`/api/report_hotel?timestamp=${values.date.unix()}&scale=${values.scale}`)
+      await request.get(
+        `/api/report_room?timestamp=${values.date.unix()}&scale=${values.scale}&room_id=${
+          values.room_id
+        }`,
+      )
     ).data;
-    for (let r of newReport) {
-      // r.total_fee = r.total_fee.toFixed(2);
-    }
     console.log(newReport);
-    setReport(newReport);
+    // for (let r of newReport) {
+    // r.total_fee = r.total_fee.toFixed(2);
+    // }
+    // setReport(newReport);
     message.success('获取报表成功');
     // } catch (e) {
     // message.error('获取报表失败');
@@ -73,14 +77,9 @@ export default () => {
           <Form.Item name="date" label="选择日期" {...config}>
             <DatePicker />
           </Form.Item>
-          <ProFormText
-            fieldProps={{
-              size: 'large',
-              prefix: <NumberOutlined />,
-            }}
+          <Form.Item
             name="room_id"
-            label="房间号"
-            placeholder="请输入房间号"
+            label="房间号码"
             rules={[
               {
                 required: true,
@@ -91,7 +90,9 @@ export default () => {
                 message: '不合法的房间号!',
               },
             ]}
-          />
+          >
+            <InputNumber />
+          </Form.Item>
           <Button type="primary" htmlType="submit">
             查询报表
           </Button>

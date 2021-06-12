@@ -45,21 +45,6 @@ class TableDemo extends React.Component {
         </Card>
         <BackTop visibilityHeight={200} style={{ right: 50 }} />
       </PageHeaderWrapper>
-
-      // <div>
-      //   <CustomBreadcrumb arr={['用户管理', '住房信息']} />
-      //   <Card
-      //     title="住房信息"
-      //     style={{ marginBottom: 10 }}
-      //     id="roominfo"
-      //   >
-      //     <Table
-      //       dataSource={this.state.data}
-      //       columns={columns1}
-      //     />
-      //   </Card>
-      //   <BackTop visibilityHeight={200} style={{ right: 50 }} />
-      // </div>
     );
   }
 }
