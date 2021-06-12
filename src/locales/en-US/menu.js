@@ -53,4 +53,10 @@ export default {
   'menu.manage': 'Manage',
   'menu.monitor': 'Monitor',
   'menu.report': 'Report',
+  'menu.manage.checkin': 'Check In',
+  'menu.manage.checkout': 'Check Out',
+  'menu.manage.bill': 'User Bill',
+  'menu.manage.room': 'Room Info',
+  'menu.report.hotel': 'Hotel',
+  'menu.report.room': 'Room',
 };

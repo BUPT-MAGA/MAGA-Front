@@ -55,7 +55,7 @@ function timeout(delay) {
 
 export default () => {
   const [data, setData] = useState([]);
-  const [refreshRate, setRefreshRate] = useState(4000);
+  const [refreshRate, setRefreshRate] = useState(2000);
   const [loading, setLoading] = useState(false);
 
   useInterval(() => {

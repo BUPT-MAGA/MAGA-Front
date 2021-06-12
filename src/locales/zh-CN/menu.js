@@ -53,4 +53,10 @@ export default {
   'menu.manage': '用户管理',
   'menu.monitor': '实时监控',
   'menu.report': '酒店报表',
+  'menu.manage.checkin': '用户入住',
+  'menu.manage.checkout': '用户退房',
+  'menu.manage.bill': '用户账单',
+  'menu.manage.room': '住房信息',
+  'menu.report.hotel': '酒店报表',
+  'menu.report.room': '房间报表',
 };

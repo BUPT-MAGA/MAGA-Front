@@ -50,24 +50,24 @@ export default [
                 component: '../layouts/BlankLayout',
                 routes: [
                   {
-                    name: '用户入住',
+                    name: 'checkin',
                     path: '/manage/checkin',
-                    component: './Manage/Checkin',
+                    component: './Manage/checkin',
                   },
                   {
-                    name: '用户退房',
+                    name: 'checkout',
                     path: '/manage/checkout',
-                    component: './Manage/Checkout',
+                    component: './Manage/checkout',
                   },
                   {
-                    name: '用户账单',
+                    name: 'bill',
                     path: '/manage/bill',
-                    component: './Manage/Bill',
+                    component: './Manage/bill',
                   },
                   {
-                    name: '住房信息',
+                    name: 'room',
                     path: '/manage/room',
-                    component: './Manage/Room',
+                    component: './Manage/room',
                   },
                 ],
               },
@@ -84,14 +84,14 @@ export default [
                 component: '../layouts/BlankLayout',
                 routes: [
                   {
-                    name: '酒店报表',
+                    name: 'hotel',
                     path: '/statistics/hotel',
-                    component: './Statistics/Hotel',
+                    component: './Statistics/hotel',
                   },
                   {
-                    name: '房间报表',
+                    name: 'room',
                     path: '/statistics/room',
-                    component: './Statistics/Room',
+                    component: './Statistics/room',
                   },
                 ],
               },

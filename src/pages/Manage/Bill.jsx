@@ -22,6 +22,7 @@ import { getStatus, getWindSpeedName } from '../../utils/utils';
 
 import { Typography, Alert } from 'antd';
 import { get } from 'lodash-es';
+import moment from 'moment';
 
 const columns1 = [
   {
@@ -60,9 +61,9 @@ export default () => {
       for (let log of detail) {
         console.log(log);
 
-        log.checkin_time = new Date(log.checkin_time).toTimeString();
+        log.checkin_time = moment.unix(log.checkin_time).format('YYYY-MM-DD HH:MM:SS');
         if (log.status === 2) {
-          log.checkout_time = new Date(log.checkout_time).toTimeString();
+          log.checkout_time = moment.unix(log.checkout_time).format('YYYY-MM-DD HH:MM:SS');
         } else {
           log.checkout_time = '-';
         }
