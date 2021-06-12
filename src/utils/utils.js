@@ -36,11 +36,11 @@ export function getStatus(s) {
 
 export function getWindSpeedName(s) {
   switch (s) {
-    case 1:
+    case 0:
       return '低风';
-    case 2:
+    case 1:
       return '中风';
-    case 3:
+    case 2:
       return '高风';
     default:
       return '未知';
@@ -49,9 +49,9 @@ export function getWindSpeedName(s) {
 
 export function getWindMode(s) {
   switch (s) {
-    case 1:
+    case 0:
       return '制冷';
-    case 2:
+    case 1:
       return '供暖';
     default:
       return '未知';
