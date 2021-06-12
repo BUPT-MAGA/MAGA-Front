@@ -2,6 +2,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import { Row, Col, Card, Spin, Table, BackTop, message, Slider, InputNumber } from 'antd';
 import { PageHeaderWrapper } from '@ant-design/pro-layout';
 import request from '../utils/request';
+import { getStatus, getWindSpeedName } from '../utils/utils';
 import { ProFormSlider } from '@ant-design/pro-form';
 
 const columns1 = [
@@ -29,28 +30,7 @@ const columns1 = [
     title: '目标温度',
     dataIndex: 'target_temp',
   },
-  {
-    title: '服务时长',
-    dataIndex: 'served_time',
-  },
-  {
-    title: '等待时间',
-    dataIndex: 'wait_time',
-  },
 ];
-
-function getWindSpeedName(s) {
-  switch (s) {
-    case 0:
-      return '低风';
-    case 1:
-      return '中风';
-    case 2:
-      return '高风';
-    default:
-      return '未知';
-  }
-}
 
 function useInterval(callback, delay) {
   const savedCallback = useRef();
@@ -90,7 +70,10 @@ export default () => {
       console.log(newData);
       for (let r of newData) {
         r.wind_speed = getWindSpeedName(r.wind_speed);
-        r.current_temp = r.current_temp.toFixed(2);
+        r.status = getStatus(r.status);
+        r.wind_mode = getWindSpeedName(r.wind_mode);
+        r.current_temp = r.current_temp.toFixed(1) + '°C';
+        r.target_temp = r.target_temp.toFixed(1) + '°C';
       }
       setData(newData);
     } catch (e) {

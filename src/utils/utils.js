@@ -22,3 +22,38 @@ export const isAntDesignProOrDev = () => {
   return isAntDesignPro();
 };
 export const getPageQuery = () => parse(window.location.href.split('?')[1]);
+
+export function getStatus(s) {
+  switch (s) {
+    case 1:
+      return '入住中';
+    case 2:
+      return '已退房';
+    default:
+      return '未知';
+  }
+}
+
+export function getWindSpeedName(s) {
+  switch (s) {
+    case 1:
+      return '低风';
+    case 2:
+      return '中风';
+    case 3:
+      return '高风';
+    default:
+      return '未知';
+  }
+}
+
+export function getWindMode(s) {
+  switch (s) {
+    case 1:
+      return '制冷';
+    case 2:
+      return '供暖';
+    default:
+      return '未知';
+  }
+}

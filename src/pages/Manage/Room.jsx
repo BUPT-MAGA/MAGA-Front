@@ -1,6 +1,7 @@
 import React from 'react';
 import { Card, Table, BackTop } from 'antd';
 import { PageHeaderWrapper } from '@ant-design/pro-layout';
+import { getStatus, getWindMode, getWindSpeedName } from '../../utils/utils';
 import request from '../../utils/request';
 
 const columns1 = [
@@ -27,6 +28,9 @@ class TableDemo extends React.Component {
     try {
       const data = (await request.get('/api/room_info')).data;
       console.log(data);
+      for (let d of data) {
+        d.status = getStatus(d.status);
+      }
       this.setState({
         data: data,
       });

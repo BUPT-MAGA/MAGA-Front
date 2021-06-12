@@ -44,7 +44,7 @@ const Model = {
           }
         }
 
-        history.replace(redirect || '/');
+        history.replace(redirect || '/settings');
       } catch (e) {
         message.error('登录失败');
       }

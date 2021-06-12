@@ -16,6 +16,10 @@ export default [
       },
       {
         path: '/',
+        redirect: '/user/login',
+      },
+      {
+        path: '/',
         component: '../layouts/SecurityLayout',
         routes: [
           {
@@ -23,10 +27,10 @@ export default [
             component: '../layouts/BasicLayout',
             authority: ['admin', 'user'],
             routes: [
-              {
-                path: '/',
-                redirect: '/settings',
-              },
+              // {
+              // path: '/',
+              // redirect: '/settings',
+              // },
               //   {
               //     path: '/list',
               //     name: 'list.table-list',
@@ -91,7 +95,6 @@ export default [
                   },
                 ],
               },
-
               {
                 component: './404',
               },

@@ -6,17 +6,17 @@ import { PageHeaderWrapper } from '@ant-design/pro-layout';
 // import { useIntl } from 'umi';
 import request from '../../utils/request';
 
-const handleSubmit = async (values) => {
-  try {
-    console.log(values);
-    await request.post('/api/checkin', values);
-    message.success('入住成功');
-  } catch (e) {
-    notification.error({
-      message: `入住失败`,
-      description: e.message,
+const handleSubmit = (values) => {
+  console.log('values:');
+  console.log(values);
+  request
+    .post('/api/checkin', values)
+    .then((response) => {
+      console.log(response), message.success('入住成功！');
+    })
+    .catch((err) => {
+      console.log(err.response), message.error('入住失败！');
     });
-  }
 };
 
 const CheckInBox = () => {
@@ -30,10 +30,8 @@ const CheckInBox = () => {
         }}
       >
         <ProForm
-          onFinish={async (values) => {
-            // await waitTime(2000);
-            await handleSubmit(values);
-            message.success('入住成功');
+          onFinish={(values) => {
+            handleSubmit(values);
           }}
           submitter={{
             searchConfig: {

@@ -18,41 +18,27 @@ import { useIntl, FormattedMessage } from 'umi';
 import { PageHeaderWrapper } from '@ant-design/pro-layout';
 import ProCard from '@ant-design/pro-card';
 import request from '../../utils/request';
+import { getStatus, getWindSpeedName } from '../../utils/utils';
+
 import { Typography, Alert } from 'antd';
+import { get } from 'lodash-es';
 
 const columns1 = [
-  {
-    title: '时间戳',
-    dataIndex: 'timestamp',
-  },
   {
     title: '房间号',
     dataIndex: 'room_id',
   },
   {
-    title: '事件类型',
-    dataIndex: 'eventType',
+    title: '状态',
+    dataIndex: 'status',
   },
   {
-    title: '模式',
-    dataIndex: 'windMode',
+    title: '入住时间',
+    dataIndex: 'checkin_time',
   },
   {
-    title: '风速',
-    dataIndex: 'windSpeed',
-  },
-  {
-    title: '当前温度',
-    dataIndex: 'curTemp',
-  },
-  {
-    title: '目标温度',
-    dataIndex: 'targetTemp',
-  },
-  {
-    title: '耗电量',
-    dataIndex: 'fee',
-    key: 'watts',
+    title: '退房时间',
+    dataIndex: 'checkout_time',
   },
   {
     title: '费用',
@@ -61,36 +47,32 @@ const columns1 = [
   },
 ];
 
-function getWindSpeedName(s) {
-  switch (s) {
-    case 0:
-      return '低风';
-    case 1:
-      return '中风';
-    case 2:
-      return '高风';
-    default:
-      return '未知';
-  }
-}
-
 export default () => {
   const [fee, setFee] = useState(0);
   const [logs, setLogs] = useState([]);
 
   const handleSubmit = async (values) => {
-    console.log(values);
     try {
+      console.log(values);
+      console.log('details:');
       let detail = (await request.get(`/api/bill?user_id=${values.user_id}`)).data;
-      console.log(detail);
-      for (let log of detail.logs) {
-        log.curTemp = log.curTemp.toFixed(2);
-        log.fee = log.fee.toFixed(2);
-        log.timestamp = new Date(log.timestamp).toTimeString();
-        log.windSpeed = getWindSpeedName(log.windSpeed);
+      let newFee = 0;
+      for (let log of detail) {
+        console.log(log);
+
+        log.checkin_time = new Date(log.checkin_time).toTimeString();
+        if (log.status === 2) {
+          log.checkout_time = new Date(log.checkout_time).toTimeString();
+        } else {
+          log.checkout_time = '-';
+        }
+        log.status = getStatus(log.status);
+        log.fee = parseFloat(log.fee.toFixed(2).replace(',', '.'));
+        newFee += log.fee;
       }
-      setFee(detail.fee);
-      setLogs(detail.logs);
+      setFee(newFee);
+      setLogs(detail);
+      message.success('查询成功');
     } catch (e) {
       message.error('查询失败');
     }
@@ -115,7 +97,6 @@ export default () => {
               <ProForm
                 onFinish={async (values) => {
                   handleSubmit(values);
-                  message.success('查询成功');
                 }}
                 submitter={{
                   searchConfig: {

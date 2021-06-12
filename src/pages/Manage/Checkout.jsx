@@ -7,15 +7,16 @@ import { PageHeaderWrapper } from '@ant-design/pro-layout';
 import request from '../../utils/request';
 
 const handleSubmit = async (values) => {
-  try {
-    console.log(values);
-    await request.post(`/api/checkout`, values);
-  } catch (e) {
-    notification.error({
-      message: `退房失败`,
-      description: e.message,
+  console.log('values:');
+  console.log(values);
+  request
+    .post('/api/checkout', values)
+    .then((response) => {
+      console.log(response), message.success('退房成功！');
+    })
+    .catch((err) => {
+      console.log(err.response), message.error('退房失败！');
     });
-  }
 };
 
 const CheckOutBox = () => {
@@ -29,9 +30,7 @@ const CheckOutBox = () => {
       >
         <ProForm
           onFinish={async (values) => {
-            // await waitTime(2000);
             await handleSubmit(values);
-            message.success('退房成功');
           }}
           submitter={{
             searchConfig: {

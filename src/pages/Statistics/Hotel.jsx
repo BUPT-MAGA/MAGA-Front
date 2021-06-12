@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
 import { Card, Table, DatePicker, BackTop, Button, Form, message, Radio } from 'antd';
 import request from '../../utils/request';
+import { getStatus, getWindMode, getWindSpeedName } from '../../utils/utils';
 import { PageHeaderWrapper } from '@ant-design/pro-layout';
+import moment from 'moment';
 
 const columns1 = [
   {
@@ -9,47 +11,14 @@ const columns1 = [
     dataIndex: 'room_id',
   },
   {
-    title: '使用空调次数',
-    dataIndex: 'turnOnCount',
-  },
-  {
-    title: '最常用目标温度',
-    dataIndex: 'favTargetTemp',
-  },
-  {
-    title: '最常用风速',
-    dataIndex: 'favSpeed',
-  },
-  {
-    title: '达到目标温度次数',
-    dataIndex: 'pauseCount',
-  },
-  {
-    title: '被调度次数',
-    dataIndex: 'scheduledCount',
-  },
-  {
-    title: '详单记录数',
-    dataIndex: 'detailCount',
+    title: '温控请求次数',
+    dataIndex: 'num_request',
   },
   {
     title: '总费用',
-    dataIndex: 'totalFee',
+    dataIndex: 'total_fee',
   },
 ];
-
-function getWindSpeedName(s) {
-  switch (s) {
-    case 0:
-      return '低风';
-    case 1:
-      return '中风';
-    case 2:
-      return '高风';
-    default:
-      return '未知';
-  }
-}
 
 const config = {
   rules: [
@@ -61,67 +30,53 @@ const config = {
   ],
 };
 
-const formItemLayout = {
-  labelCol: {
-    xs: {
-      span: 24,
-    },
-    sm: {
-      span: 8,
-    },
-  },
-  wrapperCol: {
-    xs: {
-      span: 24,
-    },
-    sm: {
-      span: 16,
-    },
-  },
+const worker = {
+  date: moment(),
+  scale: 3,
 };
 
 export default () => {
-  const [scale, setScale] = useState(1);
   const [report, setReport] = useState([]);
 
   const handleSubmit = async (values) => {
     console.log(values);
-    console.log(values.date.format('x'));
-    try {
-      const newReport = (await request.get(`/api/report/hotel?scale=${scale}`)).data;
-      console.log(newReport);
-      for (let r of newReport) {
-        r.totalFee = r.totalFee.toFixed(2);
-        r.favSpeed = getWindSpeedName(r.favSpeed);
-      }
-      console.log(newReport);
-      setReport(newReport);
-      message.success('获取报表成功');
-    } catch (e) {
-      message.error('获取报表失败');
+    console.log(values.date.unix());
+    // try {
+    const newReport = (
+      await request.get(`/api/report_hotel?timestamp=${values.date.unix()}&scale=${values.scale}`)
+    ).data;
+    for (let r of newReport) {
+      // r.total_fee = r.total_fee.toFixed(2);
     }
+    console.log(newReport);
+    setReport(newReport);
+    message.success('获取报表成功');
+    // } catch (e) {
+    // message.error('获取报表失败');
+    // }
   };
 
   return (
     <PageHeaderWrapper>
       <Card bordered={false} style={{ marginBottom: 10 }} id="basicUsage">
-        {/* <ProFormRadio.Group
-                label=""
-                name="invoiceType"
-                initialValue="月报表"
-                options={['日报表', '普票', '无票']}
-              /> */}
-        <Form name="time_related_controls" onFinish={handleSubmit}>
+        <Form name="time_related_controls" onFinish={handleSubmit} initialValues={worker}>
           <Form.Item name="scale" label="">
-            {/* <Radio.Group onChange={} value={scale}> */}
             <Radio.Group>
               <Radio value={1}>日报表</Radio>
               <Radio value={2}>周报表</Radio>
               <Radio value={3}>月报表</Radio>
             </Radio.Group>
           </Form.Item>
-          <Form.Item name="date" label="选择日期">
-            <DatePicker />
+          <Form.Item name="date" label="选择日期" {...config}>
+            <DatePicker
+            // rules={[
+            //   {
+            //     type: 'object',
+            //     required: true,
+            //     message: '请选择查询日期!',
+            //   },
+            // ]}
+            />
           </Form.Item>
           <Button type="primary" htmlType="submit">
             查询报表
