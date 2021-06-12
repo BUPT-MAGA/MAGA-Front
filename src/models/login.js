@@ -62,7 +62,8 @@ const Model = {
 
     logout() {
       const { redirect } = getPageQuery(); // Note: There may be security issues, please note
-
+      localStorage.clear();
+      console.log('logout!');
       if (window.location.pathname !== '/user/login' && !redirect) {
         history.replace({
           pathname: '/user/login',
