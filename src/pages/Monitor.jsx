@@ -8,7 +8,7 @@ import { ProFormSlider } from '@ant-design/pro-form';
 const columns1 = [
   {
     title: '房间号',
-    dataIndex: 'room_id',
+    dataIndex: 'id',
   },
   {
     title: '状态',
