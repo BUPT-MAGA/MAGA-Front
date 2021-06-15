@@ -11,12 +11,16 @@ const columns1 = [
     dataIndex: 'room_id',
   },
   {
-    title: '温控请求次数',
-    dataIndex: 'num_request',
+    title: '开机次数',
+    dataIndex: 'open_cnt',
+  },
+  {
+    title: '关机次数',
+    dataIndex: 'close_cnt',
   },
   {
     title: '总费用',
-    dataIndex: 'total_fee',
+    dataIndex: 'sum_fee',
   },
 ];
 
@@ -45,8 +49,10 @@ export default () => {
     const newReport = (
       await request.get(`/api/report_hotel?timestamp=${values.date.unix()}&scale=${values.scale}`)
     ).data;
+    console.log(newReport);
     for (let r of newReport) {
-      // r.total_fee = r.total_fee.toFixed(2);
+      r.room_id = '# ' + r.room_id;
+      r.sum_fee = '¥ ' + r.sum_fee.toFixed(2);
     }
     console.log(newReport);
     setReport(newReport);
