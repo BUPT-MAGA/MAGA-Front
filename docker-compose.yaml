@@ -1,0 +1,23 @@
+version: "3"
+services:
+  maga-program:
+    restart: always
+    image: docker.io/zebgou/maga-front
+    container_name: maga-air
+    ports:
+      - 80:80 # 设置端口 "8080(主机端口):80(容器端口)"  为了做http反代，两个容器得在一个网络下
+# docker-compose up -d # 创建容器
+# docker-compose start # 开始运行
+# docker-compose stop # 结束运行
+# docker-compose down # 删除容器
+
+# docker exec -it b48dfe2104ef  /bin/sh
+
+# 拉取一下最新的镜像
+# docker-compose pull
+# 暂停当前应用
+# docker-compose down
+# 重新构建并启动
+# docker-compose up -d --build
+# 清空不被使用的虚悬镜像
+# docker image prune -f
