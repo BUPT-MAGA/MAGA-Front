@@ -53,17 +53,17 @@ const CheckInBox = () => {
             }}
             name="user_id"
             label="客户身份证号"
-            tooltip="身份证长度为 18 位"
+            tooltip="身份证长度为 3 位"
             placeholder="请输入身份证号"
             rules={[
               {
                 required: true,
                 message: '请输入身份证号!',
               },
-              // {
-              //   pattern: /^\d{18}$/,
-              //   message: '不合法的身份证号!',
-              // },
+              {
+                pattern: /^\d*$/,
+                message: '不合法的身份证号!',
+              },
             ]}
           />
           <ProFormText

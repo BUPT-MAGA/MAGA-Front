@@ -59,7 +59,7 @@ const errorHandler = (error) => {
 let request = axios.create({
   // baseURL: 'http://localhost:8923',
   // baseURL: 'http://123.60.215.79:8000',
-  timeout: 5000,
+  timeout: 10000,
 });
 
 request.interceptors.request.use((config) => {

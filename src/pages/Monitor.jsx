@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import { Row, Col, Card, Spin, Table, BackTop, message, Slider, InputNumber } from 'antd';
 import { PageHeaderWrapper } from '@ant-design/pro-layout';
 import request from '../utils/request';
-import { getStatus, getWindSpeedName } from '../utils/utils';
+import { getStatus, getWindSpeedName, getWindMode } from '../utils/utils';
 import { ProFormSlider } from '@ant-design/pro-form';
 
 const columns1 = [
@@ -65,20 +65,27 @@ export default () => {
 
   const updateInfo = async () => {
     setLoading(true);
-    try {
-      let newData = (await request.get('/api/room_status')).data;
-      console.log(newData);
-      for (let r of newData) {
+    // try {
+    let newData = (await request.get('/api/room_status')).data;
+    console.log(newData);
+    for (let r of newData) {
+      if (r.status == 2) {
+        r.wind_speed = '-';
+        r.wind_mode = '-';
+        r.current_temp = '-';
+        r.target_temp = '-';
+      } else {
         r.wind_speed = getWindSpeedName(r.wind_speed);
-        r.status = getStatus(r.status);
-        r.wind_mode = getWindSpeedName(r.wind_mode);
+        r.wind_mode = getWindMode(r.wind_mode);
         r.current_temp = r.current_temp.toFixed(1) + '°C';
         r.target_temp = r.target_temp.toFixed(1) + '°C';
       }
-      setData(newData);
-    } catch (e) {
-      message.error('刷新失败');
+      r.status = getStatus(r.status);
     }
+    setData(newData);
+    // } catch (e) {
+    // message.error('刷新失败');
+    // }
     await timeout(500);
     setLoading(false);
   };

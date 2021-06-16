@@ -59,10 +59,10 @@ const CheckOutBox = () => {
                 required: true,
                 message: '请输入身份证号!',
               },
-              // {
-              //   pattern: /^\d{18}$/,
-              //   message: '不合法的身份证号!',
-              // },
+              {
+                pattern: /^\d*$/,
+                message: '不合法的身份证号!',
+              },
             ]}
           />
           <ProFormText
