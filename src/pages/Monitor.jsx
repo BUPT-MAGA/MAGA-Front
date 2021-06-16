@@ -11,16 +11,24 @@ const columns1 = [
     dataIndex: 'id',
   },
   {
-    title: '状态',
+    title: '入住状态',
     dataIndex: 'status',
   },
   {
-    title: '模式',
+    title: '开关状态',
+    dataIndex: 'is_online',
+  },
+  {
+    title: '温控模式',
     dataIndex: 'wind_mode',
   },
   {
-    title: '风速',
+    title: '当前风速',
     dataIndex: 'wind_speed',
+  },
+  {
+    title: '送风状态',
+    dataIndex: 'wind_status',
   },
   {
     title: '当前温度',
@@ -72,13 +80,17 @@ export default () => {
       if (r.status == 2) {
         r.wind_speed = '-';
         r.wind_mode = '-';
+        r.wind_status = '-';
         r.current_temp = '-';
         r.target_temp = '-';
+        r.is_online = '-';
       } else {
+        r.wind_status = r.wind_speed === -1 ? '待机' : '工作';
         r.wind_speed = getWindSpeedName(r.wind_speed);
         r.wind_mode = getWindMode(r.wind_mode);
         r.current_temp = r.current_temp.toFixed(1) + '°C';
         r.target_temp = r.target_temp.toFixed(1) + '°C';
+        r.is_online = r.is_online === true ? 'On' : 'Off';
       }
       r.status = getStatus(r.status);
     }

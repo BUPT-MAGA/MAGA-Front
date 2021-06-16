@@ -10,8 +10,8 @@ import request from '../../utils/request';
 class Settings extends React.Component {
   // const intl = useIntl();
   state = {
-    switch: true,
-    mode: 2,
+    switch: 0,
+    mode: 1,
     temp: 99,
     fee: 100,
     slave: 100,
@@ -23,9 +23,9 @@ class Settings extends React.Component {
   }
 
   onSwitchChange = async (value) => {
-    console.log(value);
-    const target = value === true ? 2 : 1;
-    const MSG = value === true ? '启动成功！' : '关闭成功！';
+    const target = value.target.value;
+    console.log(target);
+    const MSG = target === 2 ? '启动成功！' : '关闭成功！';
     request
       .get(`/api/settings/switch?action=${target}`)
       .then((response) => {
@@ -98,7 +98,7 @@ class Settings extends React.Component {
     console.log(initData);
     this.setState(initData, () => {
       this.formRef.current.setFieldsValue({
-        switch: this.state.switch,
+        switch: this.state.switch === true ? 2 : 1,
         mode: this.state.mode,
         temp: this.state.temp,
         fee: this.state.fee,
@@ -143,12 +143,16 @@ class Settings extends React.Component {
               ref={this.formRef} //这里注册一下ref
             >
               <Form.Item name="switch" label="系统开关">
-                <Switch onChange={this.onSwitchChange} />
+                {/* <Switch onChange={this.onSwitchChange} /> */}
+                <Radio.Group onChange={this.onSwitchChange}>
+                  <Radio value={1}>关闭</Radio>
+                  <Radio value={2}>启动</Radio>
+                </Radio.Group>
               </Form.Item>
               <Form.Item name="mode" label="温控模式">
                 <Radio.Group onChange={this.onModeChange}>
-                  <Radio value={0}>供暖</Radio>
-                  <Radio value={1}>制冷</Radio>
+                  <Radio value={0}>制冷</Radio>
+                  <Radio value={1}>供暖</Radio>
                 </Radio.Group>
               </Form.Item>
               <Form.Item name="temp" label="缺省温度">

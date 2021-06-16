@@ -16,13 +16,13 @@ import {
 } from 'antd';
 import request from '../../utils/request';
 import ProCard from '@ant-design/pro-card';
-import { getStatus, getWindMode, getWindSpeedName } from '../../utils/utils';
 import ProForm, { ProFormText } from '@ant-design/pro-form';
 import { CreditCardOutlined, NumberOutlined } from '@ant-design/icons';
 import { PageHeaderWrapper } from '@ant-design/pro-layout';
 import { ChartCard, Bar, Field, MiniArea, MiniBar, MiniProgress } from 'ant-design-pro/lib/Charts';
 import moment from 'moment';
 import numeral from 'numeral';
+import { getStatus, getWindMode, getWindSpeedName } from '../../utils/utils';
 
 const columns1 = [
   {
@@ -40,6 +40,10 @@ const columns1 = [
   {
     title: '终止温度',
     dataIndex: 'end_temp',
+  },
+  {
+    title: '风速',
+    dataIndex: 'wind_speed',
   },
   {
     title: '风量',
@@ -78,25 +82,30 @@ export default () => {
   const [openCntSum, setOpenCntSum] = useState(0);
 
   const handleSubmit = async (values) => {
+    console.log('hr1');
     console.log(values);
     console.log(values.date.unix());
     // try {
-    const report = (
+    let report = (
       await request.get(
         `/api/report_room?timestamp=${values.date.unix()}&span=12&scale=${values.scale}&room_id=${
           values.room_id
         }`,
       )
     ).data;
-    console.log(report);
+    // .then((response) => {
+    //   console.log(response), message.success(MSG);
+    // };
     let newFees = [];
     let newOpenCnts = [];
     let newOpenCntSum = 0;
     let newFeeSum = 0;
     let newDetail = [];
+    console.log('raw report:');
+    console.log(report);
     for (let key in report) {
       // r.total_fee = r.total_fee.toFixed(2);
-      const val = report[key];
+      let val = report[key];
       key = parseInt(key);
       const date_formatted = moment.unix(key).format(values.scale == 3 ? MONTH_FORMAT : DAY_FORMAT);
       newFees.push({
@@ -109,6 +118,7 @@ export default () => {
       });
       newFeeSum += val.sum_fee;
       newOpenCntSum += val.open_cnt;
+      console.log('spans:', val.spans);
       newDetail.push(...val.spans);
     }
     setFees(newFees);
@@ -117,14 +127,23 @@ export default () => {
     setOpenCntSum(newOpenCntSum);
     // process tiemstamps
 
+    console.log('newDetail');
     console.log(newDetail);
     for (let d of newDetail) {
-      d.start_time = moment.unix(parseInt(d.start_time)).format('YYYY-MM-DD HH:MM:SS');
-      d.end_time = moment.unix(parseInt(d.end_time)).format('YYYY-MM-DD HH:MM:SS');
+      d.wind_speed = getWindSpeedName(d.wind_speed);
+      d.start_time = moment.unix(parseInt(d.start_time)).format('YYYY-MM-DD HH:mm:ss');
+
+      console.log(d.end_time);
+      d.end_time = moment.unix(parseInt(d.end_time)).format('YYYY-MM-DD HH:mm:s');
+      console.log('after');
+      console.log(d.end_time);
     }
 
+    newDetail
+      .sort((a, b) => (a.start_time - b.start_time) * 10 + (a.end_time - b.end_time))
+      .reverse();
     setDetail(newDetail);
-    message.success('获取报表成功');
+    // message.success('获取报表成功');
     // } catch (e) {
     // message.error('获取报表失败');
     // }

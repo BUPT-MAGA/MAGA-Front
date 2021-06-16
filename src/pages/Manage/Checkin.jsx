@@ -61,7 +61,7 @@ const CheckInBox = () => {
                 message: '请输入身份证号!',
               },
               {
-                pattern: /^\d*$/,
+                pattern: /^[0-9X]*$/,
                 message: '不合法的身份证号!',
               },
             ]}

@@ -30,7 +30,7 @@ export function getStatus(s) {
     case 2:
       return '已退房';
     default:
-      return '未知';
+      return '-';
   }
 }
 
@@ -43,7 +43,7 @@ export function getWindSpeedName(s) {
     case 2:
       return '高风';
     default:
-      return '未知';
+      return '-';
   }
 }
 
@@ -54,6 +54,17 @@ export function getWindMode(s) {
     case 1:
       return '供暖';
     default:
-      return '未知';
+      return '-';
   }
 }
+
+// export function getWindStatus(s) {
+//   switch (s) {
+//     case 0:
+//       return '制冷';
+//     case 1:
+//       return '供暖';
+//     default:
+//       return '未知';
+//   }
+// }
