@@ -17,6 +17,19 @@ MAGA: Make AC Great Again! (A Central Air Conditioning System)
 - Docker
 - Docker-Compose
 
+Upload to docker(windows):
+
+```bash
+deploy.bat
+```
+
+Deploy on sever:
+
+```
+docker pull ...
+docker-compose up -d
+```
+
 ## Environment Prepare
 
 Install `node_modules`:
